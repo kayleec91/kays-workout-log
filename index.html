@@ -22,112 +22,117 @@ html,body{height:100%;background:#0f0f0f;font-family:-apple-system,BlinkMacSyste
   --radius:14px;--radius-sm:9px;--radius-pill:999px;
 }
 .app{max-width:430px;margin:0 auto;padding:20px 14px 120px;min-height:100vh}
-
-/* header */
 .header{margin-bottom:18px;padding-top:env(safe-area-inset-top,8px)}
 .logo{font-size:25px;font-weight:700;letter-spacing:-0.5px}
 .logo em{color:var(--brand);font-style:normal}
 .sub{font-size:11px;color:var(--text3);margin-top:2px;letter-spacing:.05em;text-transform:uppercase}
-
-/* controls */
 .controls-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .badge{font-size:11px;padding:4px 11px;border-radius:var(--radius-pill);background:var(--brand-soft);color:var(--brand);border:0.5px solid var(--brand-border);font-weight:600}
 select{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-radius:var(--radius-pill);background:var(--surface2);color:var(--text);cursor:pointer;outline:none}
-
-/* tabs */
 .tabs-wrap{overflow-x:auto;margin-bottom:12px;padding-bottom:2px;scrollbar-width:none}
 .tabs-wrap::-webkit-scrollbar{display:none}
 .tabs{display:flex;gap:6px;width:max-content}
 .tab{padding:7px 14px;font-size:12px;font-weight:600;border-radius:var(--radius-pill);border:0.5px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s}
 .tab.active{background:var(--brand);color:#fff;border-color:var(--brand)}
 .tab.cardio-tab.active{background:var(--blue);border-color:var(--blue)}
-
-/* progress */
 .prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:5px}
 .prog-bar{height:4px;background:var(--surface3);border-radius:2px;margin-bottom:14px;overflow:hidden}
 .prog-fill{height:100%;background:var(--brand);border-radius:2px;transition:width .4s}
 
 /* floating timer */
-.float-timer{position:sticky;top:8px;z-index:40;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.6)}
-.ft-num{font-size:32px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-1px;min-width:70px;color:var(--text)}
+.float-timer{position:sticky;top:6px;z-index:40;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:11px 13px;margin-bottom:14px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 28px rgba(0,0,0,.7)}
+.ft-num{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-1px;min-width:64px;color:var(--text);line-height:1}
 .ft-num.warn{color:var(--brand)}
 .ft-meta{flex:1;min-width:0}
-.ft-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ft-presets{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.ft-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.ft-presets{display:flex;gap:4px;flex-wrap:wrap}
 .ft-pre{padding:3px 8px;font-size:10px;border-radius:var(--radius-pill);border:0.5px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;font-weight:500}
 .ft-pre.on{border-color:var(--brand);color:var(--brand)}
-.ft-btns{display:flex;gap:6px;flex-direction:column;align-items:flex-end}
-.ft-btn{padding:6px 14px;font-size:12px;font-weight:600;border-radius:var(--radius-pill);border:0.5px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;white-space:nowrap}
+.ft-btns{display:flex;gap:5px;flex-direction:column;align-items:flex-end}
+.ft-btn{padding:6px 12px;font-size:11px;font-weight:600;border-radius:var(--radius-pill);border:0.5px solid var(--border);background:var(--surface2);color:var(--text);cursor:pointer;white-space:nowrap}
 .ft-btn.go{background:var(--brand);color:#fff;border-color:var(--brand)}
 
 /* exercise cards */
 .section-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
 .ex-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:13px;margin-bottom:10px}
 .ex-card.complete{border-color:var(--green);background:var(--green-soft)}
-.ex-head{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+.ex-head{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
 .ex-letter{font-size:10px;font-weight:700;padding:3px 7px;border-radius:var(--radius-pill);background:var(--brand-soft);color:var(--brand);border:0.5px solid var(--brand-border);flex-shrink:0;margin-top:2px}
+.ex-name-wrap{flex:1;min-width:0}
+.ex-name-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .ex-name-btn{font-size:14px;font-weight:600;color:var(--text);background:none;border:none;text-align:left;cursor:pointer;padding:0;line-height:1.3;text-decoration:underline;text-decoration-color:var(--brand);text-underline-offset:3px}
+.prev-badge{font-size:10px;padding:2px 7px;border-radius:var(--radius-pill);background:var(--gold-soft);color:var(--gold);border:0.5px solid var(--gold-border);font-weight:600;white-space:nowrap;flex-shrink:0}
 .ex-note{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5}
 .pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
 .pill{font-size:11px;padding:3px 9px;border-radius:var(--radius-pill);background:var(--surface2);color:var(--text2);border:0.5px solid var(--border2);font-weight:500}
 
-/* set rows - Hevy style */
+/* sets table */
 .sets-table{width:100%;border-collapse:collapse;margin-bottom:8px}
-.sets-table th{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding:0 4px 6px;text-align:center}
-.sets-table th:first-child{text-align:left;padding-left:0}
-.sets-table td{padding:4px;text-align:center;vertical-align:middle}
-.sets-table td:first-child{text-align:left;padding-left:0;font-size:12px;font-weight:600;color:var(--text3);width:32px}
-.set-input{width:100%;padding:7px 4px;font-size:13px;font-weight:600;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);text-align:center;outline:none;min-width:0}
+.sets-table th{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding:0 3px 6px;text-align:center}
+.sets-table th:first-child{text-align:left;padding-left:0;width:28px}
+.sets-table td{padding:3px;text-align:center;vertical-align:middle}
+.sets-table td:first-child{text-align:left;padding-left:0;font-size:12px;font-weight:600;color:var(--text3)}
+.set-input{width:100%;padding:7px 3px;font-size:13px;font-weight:600;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);text-align:center;outline:none;min-width:0}
 .set-input:focus{border-color:var(--brand)}
-.set-check{width:32px;height:32px;border-radius:50%;border:0.5px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text3);margin:0 auto;transition:all .15s;flex-shrink:0}
+.set-check{width:32px;height:32px;border-radius:50%;border:0.5px solid var(--border);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);margin:0 auto;transition:all .15s}
 .set-check.done{background:var(--brand);border-color:var(--brand);color:#fff}
 .ex-card.complete .set-check.done{background:var(--green);border-color:var(--green)}
-.del-set{width:24px;height:24px;border-radius:50%;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto;flex-shrink:0}
-.add-set-btn{width:100%;padding:8px;font-size:12px;font-weight:600;border:0.5px dashed var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text3);cursor:pointer;margin-top:4px;letter-spacing:.02em}
-.add-set-btn:active{background:var(--surface2)}
+.del-set{width:22px;height:22px;border-radius:50%;border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.add-set-btn{width:100%;padding:8px;font-size:12px;font-weight:600;border:0.5px dashed var(--border);border-radius:var(--radius-sm);background:transparent;color:var(--text3);cursor:pointer;margin-top:4px}
 
 /* cardio */
 .cardio-tip{background:var(--gold-soft);border:0.5px solid var(--gold-border);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:14px}
 .cardio-tip-title{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
 .cardio-tip-body{font-size:12px;color:#a09060;line-height:1.6}
 .cardio-card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:13px;margin-bottom:10px}
-.cardio-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px}
-.cardio-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
-.cardio-row label{font-size:12px;color:var(--text2);flex-shrink:0;min-width:70px}
-.cardio-input{width:80px;padding:7px 8px;font-size:13px;font-weight:600;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);text-align:center;outline:none}
+.cardio-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px}
+.cardio-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;flex-wrap:wrap}
+.cardio-row label{font-size:12px;color:var(--text2);flex-shrink:0;min-width:68px}
+.cardio-input{width:90px;padding:7px 8px;font-size:13px;font-weight:600;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);text-align:center;outline:none}
 .cardio-input:focus{border-color:var(--blue)}
 .cardio-timer-btn{padding:7px 14px;font-size:12px;font-weight:600;border-radius:var(--radius-pill);border:none;background:var(--blue);color:#fff;cursor:pointer}
-.cardio-elapsed{font-size:13px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums}
+.cardio-elapsed{font-size:14px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums;min-width:48px}
 .custom-cardio-form{background:var(--surface);border:0.5px dashed var(--border);border-radius:var(--radius);padding:13px;margin-bottom:10px}
 .custom-cardio-form input{width:100%;padding:9px 12px;font-size:13px;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);outline:none;margin-bottom:8px}
-.custom-cardio-form input:focus{border-color:var(--blue)}
 .add-custom-btn{width:100%;padding:9px;font-size:13px;font-weight:600;border-radius:var(--radius-pill);border:none;background:var(--blue);color:#fff;cursor:pointer}
 
-/* complete button */
+/* complete */
 .complete-section{margin-top:20px;padding:16px;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius)}
-.complete-title{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px;text-align:center}
-.volume-display{text-align:center;font-size:22px;font-weight:700;color:var(--brand);margin-bottom:12px}
-.volume-label{font-size:11px;color:var(--text3);text-align:center;margin-bottom:14px;margin-top:-8px}
-.photo-upload-area{border:0.5px dashed var(--border);border-radius:var(--radius-sm);padding:16px;text-align:center;cursor:pointer;margin-bottom:12px;color:var(--text3);font-size:13px}
-.photo-upload-area.has-photo{border-color:var(--green);color:var(--green)}
-.photo-preview{width:100%;max-height:180px;object-fit:cover;border-radius:var(--radius-sm);margin-bottom:8px;display:none}
-.complete-btn{width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:var(--radius-pill);border:none;background:var(--brand);color:#fff;cursor:pointer;letter-spacing:.03em}
-.complete-btn:disabled{opacity:.5;cursor:not-allowed}
+.complete-title{font-size:12px;font-weight:600;color:var(--text3);margin-bottom:10px;text-align:center;text-transform:uppercase;letter-spacing:.05em}
+.volume-display{text-align:center;font-size:28px;font-weight:700;color:var(--brand);margin-bottom:4px}
+.volume-label{font-size:11px;color:var(--text3);text-align:center;margin-bottom:14px}
+.photo-area{border:0.5px dashed var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center;cursor:pointer;margin-bottom:12px;color:var(--text3);font-size:13px;line-height:1.5}
+.photo-area.has-photo{border-color:var(--green);color:var(--green)}
+.photo-preview{width:100%;max-height:160px;object-fit:cover;border-radius:var(--radius-sm);margin-bottom:8px;display:none}
+.complete-btn{width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:var(--radius-pill);border:none;background:var(--brand);color:#fff;cursor:pointer;letter-spacing:.02em}
 
 /* modals */
-.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.82);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:100;display:flex;align-items:flex-end;justify-content:center}
 .modal{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 16px 48px;width:100%;max-width:430px;max-height:88vh;overflow-y:auto}
 .modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .modal-title{font-size:17px;font-weight:700;color:var(--text)}
 .modal-close{font-size:13px;color:var(--text2);cursor:pointer;padding:5px 12px;background:var(--surface2);border-radius:var(--radius-pill);border:0.5px solid var(--border);font-weight:600}
 
-/* exercise info modal */
-.ex-img{width:100%;max-height:200px;object-fit:contain;border-radius:var(--radius-sm);margin-bottom:14px;background:var(--surface2)}
-.ex-img-placeholder{width:100%;height:140px;border-radius:var(--radius-sm);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:14px}
+/* modal tabs */
+.modal-tabs{display:flex;gap:6px;margin-bottom:16px}
+.modal-tab{flex:1;padding:8px;font-size:12px;font-weight:600;border-radius:var(--radius-pill);border:0.5px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;text-align:center}
+.modal-tab.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* exercise info */
+.ex-illus{width:100%;height:160px;object-fit:contain;border-radius:var(--radius-sm);margin-bottom:14px;background:var(--surface2)}
+.ex-illus-wrap{width:100%;height:160px;background:var(--surface2);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:14px;overflow:hidden}
 .info-section{margin-bottom:14px}
 .info-label{font-size:10px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
 .info-body{font-size:13px;color:var(--text2);line-height:1.7}
 .info-body li{margin-left:16px;margin-bottom:3px}
+
+/* history in modal */
+.hist-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid var(--border2)}
+.hist-row:last-child{border-bottom:none}
+.hist-week{font-size:12px;font-weight:600;color:var(--text)}
+.hist-detail{font-size:12px;color:var(--text2)}
+.hist-vol{font-size:11px;color:var(--text3)}
+.empty-hist{text-align:center;padding:24px 0;color:var(--text3);font-size:13px;line-height:1.8}
 
 /* setup */
 .setup-banner{background:var(--brand-soft);border:0.5px solid var(--brand-border);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -143,12 +148,12 @@ select{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-r
 .url-save-btn{width:100%;margin-top:10px;padding:11px;font-size:14px;font-weight:600;border-radius:var(--radius-pill);background:var(--brand);color:#fff;border:none;cursor:pointer}
 
 /* toast */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius-pill);padding:8px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius-pill);padding:8px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 .toast.ok{color:var(--green);border-color:var(--green-border)}
 .toast.err{color:var(--brand);border-color:var(--brand-border)}
 
-/* fab row */
+/* fab */
 .fab-row{position:fixed;bottom:24px;right:14px;display:flex;flex-direction:column;gap:7px;z-index:50}
 .fab{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-pill);padding:9px 15px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 4px 20px rgba(0,0,0,.5);white-space:nowrap}
 </style>
@@ -170,8 +175,6 @@ select{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-r
   <div class="tabs-wrap"><div class="tabs" id="tabs"></div></div>
   <div class="prog-row"><span id="progText">0 of 0 sets</span><span id="progPct">0%</span></div>
   <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-
-  <!-- floating timer -->
   <div class="float-timer" id="floatTimer">
     <div>
       <div class="ft-num" id="tNum">3:00</div>
@@ -183,14 +186,12 @@ select{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-r
       <button class="ft-btn" onclick="resetTimer()">Reset</button>
     </div>
   </div>
-
   <div id="mainContent"></div>
 </div>
 
 <div class="fab-row">
   <button class="fab" onclick="openSetup()">⚙️ Sheets</button>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <!-- Exercise Info Modal -->
@@ -200,7 +201,12 @@ select{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-r
       <div class="modal-title" id="exModalTitle">Exercise</div>
       <button class="modal-close" onclick="closeModal('exModal')">Close</button>
     </div>
-    <div id="exModalBody"></div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="infoTab" onclick="switchModalTab('info')">Info</button>
+      <button class="modal-tab" id="histTab" onclick="switchModalTab('hist')">My History</button>
+    </div>
+    <div id="exModalInfo"></div>
+    <div id="exModalHist" style="display:none"></div>
   </div>
 </div>
 
@@ -214,12 +220,12 @@ select{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-r
     <div class="setup-step">
       <div class="setup-step-num">Step 1</div>
       <div class="setup-step-title">Create your Google Sheet</div>
-      <div class="setup-step-body">Go to <a href="https://sheets.google.com" target="_blank">sheets.google.com</a> and create a blank spreadsheet named <strong>Kay's Workout Log</strong>.</div>
+      <div class="setup-step-body">Go to <a href="https://sheets.google.com" target="_blank">sheets.google.com</a>, create a blank spreadsheet named <strong>Kay's Workout Log</strong>.</div>
     </div>
     <div class="setup-step">
       <div class="setup-step-num">Step 2</div>
       <div class="setup-step-title">Add the Apps Script</div>
-      <div class="setup-step-body">Click <strong>Extensions → Apps Script</strong>. Delete everything, paste the code from <strong>apps-script.js</strong>, save, then click <strong>Deploy → New Deployment → Web App</strong>. Set access to <strong>Anyone</strong>. Copy the Web App URL.</div>
+      <div class="setup-step-body">Click <strong>Extensions → Apps Script</strong>. Delete everything, paste the <strong>apps-script.js</strong> code, save, then <strong>Deploy → New Deployment → Web App</strong>. Access: <strong>Anyone</strong>. Copy the URL.</div>
     </div>
     <div class="setup-step">
       <div class="setup-step-num">Step 3</div>
@@ -231,137 +237,136 @@ select{font-size:12px;padding:5px 10px;border:0.5px solid var(--border);border-r
 </div>
 
 <script>
-// ============================================================
-// DATA
-// ============================================================
-const EXERCISE_INFO = {
-  'Hack Squat Machine':{emoji:'🦵',muscles:'Quads (primary), glutes, hamstrings',cues:['Keep your back flat against the pad at all times','Feet shoulder-width, toes slightly out','Lower until thighs are parallel or below','Drive through your heels to stand','Keep knees tracking over toes — do not cave inward'],mistakes:['Rounding the lower back off the pad','Letting the knees collapse inward','Not going deep enough — half reps limit glute activation','Locking out and hyperextending at the top']},
-  'Dumbbell RDL':{emoji:'🏋️',muscles:'Hamstrings (primary), glutes, lower back',cues:['Soft bend in the knees throughout — this is NOT a squat','Hinge at the hips, push them back as the weights descend','Keep the dumbbells close to your legs the entire way down','Flat back — imagine a board from your head to your tailbone','Feel the stretch in your hamstrings, then drive hips forward to stand'],mistakes:['Squatting instead of hinging','Letting the back round — this puts pressure on the spine','Going too heavy and losing form','Not pausing at the bottom to feel the stretch']},
-  'DB Bulgarian Split Squat':{emoji:'🦵',muscles:'Glutes, quads, hamstrings (unilateral)',cues:['Take a large step forward — torso leans forward slightly','Back foot elevated on bench, laces down','Lower the back knee toward the floor',  'Front foot bears the load — drive through the heel','Keep your torso upright or slightly forward'],mistakes:['Front foot too close — causes knee to travel far over toes','Standing too upright — reduces glute engagement','Not lowering far enough','Rushing the movement — use the full tempo']},
-  'Lying Leg Curl':{emoji:'🦵',muscles:'Hamstrings (primary), calves',cues:['Hips stay pressed into the pad throughout','Curl as far as you can — get a full contraction','Lower slowly (4-second eccentric per program)','Point toes slightly to maximize hamstring engagement','Do not jerk or use momentum'],mistakes:['Letting the hips lift off the pad','Using momentum instead of muscle','Incomplete range of motion at top or bottom']},
-  'Moving Plank':{emoji:'💪',muscles:'Core (transverse abdominis, obliques), shoulders',cues:['Stay on forearms or use Smith Machine bar','Body in a straight line from head to heels','Pause 2 seconds at the top of each movement','Breathe steadily — do not hold your breath','Squeeze your glutes and brace your core throughout'],mistakes:['Hips sagging or piking up','Holding your breath','Moving too fast — control each rep']},
-  'Machine Shoulder Press':{emoji:'💪',muscles:'Anterior deltoid (primary), lateral deltoid, triceps',cues:['Adjust seat so handles are at shoulder height','Press directly overhead, do not flare elbows excessively','1 and 1/4 rep: press up, lower 1/4, press back up = 1 rep','Control the descent — 3 seconds down','Keep wrists neutral and stacked over elbows'],mistakes:['Arching the lower back — keep it pressed against pad','Partial reps — go through the full range','Elbows flaring too wide — risks shoulder impingement']},
-  'Pull Ups – Supinated':{emoji:'💪',muscles:'Lats (primary), biceps, rear deltoids',cues:['Supinated = palms facing you (like a chin-up grip)','Start from a dead hang — full extension at the bottom','Pull until chin is over the bar','Squeeze shoulder blades together at the top','Control the descent — do not drop'],mistakes:['Not going through full range of motion','Swinging or kipping','Shrugging shoulders instead of pulling with lats']},
-  'Machine Chest Press – Neutral':{emoji:'💪',muscles:'Pectorals (primary), anterior deltoid, triceps',cues:['Neutral grip = palms facing each other','1 and 1/4 rep: press out, pull 1/4 back, press fully out = 1 rep','Keep shoulder blades retracted and down throughout','Control the weight back — 3 seconds on the way in','Feet flat on floor for stability'],mistakes:['Flaring elbows out to 90 degrees — reduces pec engagement','Letting shoulders roll forward at full extension','Bouncing the weight off the stack']},
-  'One Arm DB Rows – Dead Stop':{emoji:'💪',muscles:'Lats, rhomboids, rear delts, biceps (unilateral)',cues:['Rest the DB on the floor between each rep — full dead stop','Pull with your elbow, not your hand','Squeeze the lat hard at the top','Keep the non-working arm braced on a bench','Torso roughly parallel to the floor'],mistakes:['Using too much momentum and twisting the torso','Not coming to a full dead stop on the floor','Pulling with the bicep instead of the back']},
-  'BB Curls':{emoji:'💪',muscles:'Biceps brachii (primary), brachialis',cues:['Elbows pinned to your sides throughout','Control the descent — 2 seconds down','Full extension at the bottom — do not cheat the range','Squeeze hard at the top','Use a grip just outside shoulder width'],mistakes:['Swinging the torso to curl the weight up','Not lowering fully — partial reps','Elbows drifting forward at the top']},
-  'Machine Tricep Extension':{emoji:'💪',muscles:'Triceps (all three heads)',cues:['Keep upper arms stationary — only the forearms move','Full extension at the bottom — squeeze the triceps','2-second controlled return to start','Keep wrists straight throughout','Adjust seat so elbows align with the machine pivot'],mistakes:['Letting the elbows flare out wide','Not fully extending — leaving reps on the table','Using too much weight and compensating with the shoulders']},
-  'Rope Crunches':{emoji:'🔥',muscles:'Rectus abdominis (primary), obliques',cues:['Kneel facing the cable machine','Pull the rope to your ears — do not let it move','Crunch by curling your chest toward your hips','Pause at the bottom — squeeze hard','Hinge at the hips, not just the neck'],mistakes:['Pulling with the arms instead of the abs','Not achieving full range of motion — barely crunching','Using too much weight and losing control']},
-  'BB Romanian Deadlifts':{emoji:'🏋️',muscles:'Hamstrings (primary), glutes, lower back',cues:['Similar to DB RDL but with a barbell — keep it close to your legs','Hinge at the hips, push them back','1-second pause at the bottom to eliminate momentum','Flat back throughout — no rounding','Drive hips forward to return — squeeze glutes at top'],mistakes:['Rounding the lower back','Bar drifting away from the body — increases spinal load','Going too heavy and losing the hip hinge pattern']},
-  'DB Front Foot Elevated Split Squat':{emoji:'🦵',muscles:'Quads (primary), glutes, hip flexors',cues:['Front foot is elevated on a plate or step','This emphasizes the quads more than a flat split squat','Lower the back knee toward the floor with control','Keep the torso upright','Drive through the front heel to stand'],mistakes:['Letting the front knee cave inward','Not using a large enough step','Rushing the descent']},
-  'Leg Press – Feet Middle':{emoji:'🦵',muscles:'Quads (primary), glutes, hamstrings',cues:['Feet centered on the platform at shoulder width','Pause 1 second at the bottom — do not bounce','Lower until knees reach 90 degrees or below','Do not lock out completely at the top','Keep lower back pressed into the seat'],mistakes:['Letting knees cave inward','Lifting hips off the seat at the bottom','Locking knees out at the top — removes tension']},
-  'BB Hip Thrusts':{emoji:'🍑',muscles:'Glutes (primary), hamstrings',cues:['Upper back rests on the bench edge — not your neck','Feet flat, about hip-width, knees at 90 at the top','Drive through the heels — squeeze glutes hard at the top','Pause 2 seconds at the top per the program','Chin tucked — avoid hyperextending the neck'],mistakes:['Hyperextending the lower back at the top — squeeze instead','Feet too far forward or too close','Not pausing — just bouncing the weight']},
-  'Glute Medius Kickbacks – Cable':{emoji:'🍑',muscles:'Glute medius (primary), glute minimus',cues:['Attach ankle strap to the cable','Stand slightly offset — kick the leg back and out','Keep a slight forward lean — hold something for balance','Pause at full extension — 2 seconds per program','Do not rotate the hip — keep movement isolated'],mistakes:['Rotating the torso to get more range','Not pausing at the top — limits glute med activation','Too much weight causing form breakdown']},
-  'Incline Machine Chest Press – Neutral':{emoji:'💪',muscles:'Upper pectorals (primary), anterior delts, triceps',cues:['Incline targets the upper chest more than flat press','Keep shoulder blades squeezed back throughout','Full range of motion — do not stop short','Last set is a Drop Set — immediately reduce weight and continue','Control the return — 2 seconds'],mistakes:['Flaring elbows excessively','Partial reps','Losing shoulder blade retraction as fatigue sets in']},
-  'Lat Pulldown – Mid Pronated':{emoji:'💪',muscles:'Latissimus dorsi (primary), biceps, rear delts',cues:['Grip slightly wider than shoulder width, palms facing away','Pull the bar to your upper chest — not behind your neck','Squeeze the lats at the bottom — hold briefly','Lean back very slightly — not a big lean','Control the return — full stretch at the top'],mistakes:['Pulling behind the neck — risks injury','Using momentum to pull the bar down','Not achieving a full stretch at the top']},
-  'Standing DB Lateral Raises':{emoji:'💪',muscles:'Lateral deltoid (primary)',cues:['Slight bend in the elbows throughout','Raise to shoulder height — lead with the elbows','Pinky slightly higher than thumb at the top','2-second controlled lower','Last set is a Drop Set — go immediately to a lighter weight'],mistakes:['Shrugging the traps — keep shoulders down','Swinging the weight up with momentum','Going above shoulder height — reduces lateral delt tension']},
-  'Seated Row – Neutral':{emoji:'💪',muscles:'Lats, rhomboids, mid-traps, biceps',cues:['Neutral grip = palms facing each other','Pull to your lower chest/upper stomach — not your chin','Squeeze shoulder blades together hard at the end','Slow return — 2 seconds back to start','Keep torso upright — do not rock back and forth'],mistakes:['Leaning too far back and using momentum','Pulling too high — toward the chin instead of the chest','Not squeezing the shoulder blades at the peak']},
-  'Rope Face Pull':{emoji:'💪',muscles:'Rear deltoids, rotator cuff, mid-traps',cues:['Set the cable at face height or slightly above','Pull toward your face — elbows high and wide','Externally rotate at the end — hands behind ears','Pause briefly at full contraction','Keep shoulder blades retracted throughout'],mistakes:['Pulling too low — becomes a row instead','Elbows dropping below the shoulders','Not achieving external rotation at the end']},
-  'Cable Bicep Curls':{emoji:'💪',muscles:'Biceps (primary)',cues:['Stand close to the cable machine','Elbows pinned at your sides','Squeeze hard at the top','Control the negative — cable maintains tension throughout the movement','15-second rest between F1 and F2 — it is a superset essentially'],mistakes:['Swinging the torso','Letting the cable pull the arms back instead of controlling it']},
-  'Rope Tricep Pushdowns':{emoji:'💪',muscles:'Triceps (primary)',cues:['Split the rope at the bottom of each rep','Push down until full extension — squeeze','Pause 2 seconds at the bottom per the program','Upper arms stay pinned to your sides','Keep wrists neutral'],mistakes:['Letting elbows flare forward','Not pausing at the bottom','Using too much weight and bending forward']},
-  'Lying Leg Raises':{emoji:'🔥',muscles:'Lower rectus abdominis, hip flexors',cues:['Lie flat, hands under your lower back for support','Keep legs straight or very slightly bent','Lower until just above the floor — do not let them rest','Raise back to vertical in a controlled arc','Breathe out on the way up'],mistakes:['Letting the lower back arch off the floor','Letting the legs drop instead of controlling the descent','Bending the knees too much — reduces ab engagement']},
-  'Kas Glute Bridge':{emoji:'🍑',muscles:'Glutes (primary), hamstrings',cues:['Different from a hip thrust — keep upper back on the FLOOR','Feet flat, knees bent, hip-width apart','Drive hips up — squeeze glutes hard at the top','Lower slowly — do not bounce','Prisoner style = hands above head if the DB is too heavy'],mistakes:['Hyperextending the lower back — squeeze instead','Letting the hips drop too quickly','Using too much weight before mastering the movement']},
-  'Leg Press – Feet High and Wide':{emoji:'🦵',muscles:'Glutes and inner thighs (primary), hamstrings',cues:['Feet high on the platform — engages glutes more','Wide stance — targets inner thighs','Descend until knees are close to 90 degrees','Drive through the heels','Do not lock knees at the top'],mistakes:['Lifting hips off the seat','Allowing knees to cave inward','Locking out completely at the top']},
-  '45° Back Extension – DB Behind Head':{emoji:'🍑',muscles:'Glutes (primary), hamstrings, lower back',cues:['Hold DB behind the head or across the chest','Hinge at the hips — do not round the spine','Rise until your body is in a straight line','Squeeze glutes hard at the top','Prisoner style = hands clasped behind head if DB is too heavy'],mistakes:['Hyperextending beyond a straight line at the top','Rounding the lower back at the bottom','Going too fast — slow controlled reps get better results']},
-  'Leg Extensions':{emoji:'🦵',muscles:'Quadriceps (all four heads)',cues:['Adjust pad so it rests just above the ankles','Extend until legs are nearly straight','Squeeze the quads hard at the top','2-second controlled lowering phase','Keep your back pressed into the seat'],mistakes:['Jerking the weight up with momentum','Not reaching full extension','Lifting hips off the seat']},
-  'Seated Leg Curls':{emoji:'🦵',muscles:'Hamstrings (primary)',cues:['Adjust so the pad rests just above the heels','Curl all the way down — full range','Squeeze hard at full contraction','Slow return — 2 seconds','Keep the lower back pressed into the seat'],mistakes:['Partial range of motion','Using momentum — jerking the weight','Hips lifting off the seat at the bottom']},
-  'Standing Straight Leg Abductions – Banded':{emoji:'🍑',muscles:'Glute medius, glute minimus, TFL',cues:['Band just above the knees or around the ankles','Keep the working leg straight','Kick directly out to the side — not behind','Hold something for balance','Fast and explosive — 1 second up, 1 second down per tempo'],mistakes:['Rotating the hip instead of pure abduction','Not keeping the working leg straight','Leaning too far to the non-working side']},
-  'Banded Kickbacks':{emoji:'🍑',muscles:'Glutes (primary), hamstrings',cues:['Band around the ankles','Slight forward lean, hand on something for support','Kick straight back — pause at full extension','Keep the movement slow and controlled — 1 second up, 1 second down','Do not rotate the hip — keep it square'],mistakes:['Rotating the torso to get more range','Not pausing at the top','Using too much momentum — ruins the isolation']},
+// ── EXERCISE DATA ────────────────────────────────────────────
+// Images from ExerciseDB / wger open APIs (no key needed for illustrations)
+const EX_INFO = {
+  'Hack Squat Machine':{img:'https://images.wger.de/api/v2/exerciseimage/?format=json&language=2&exercise=364',imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Hack_squat.jpg/320px-Hack_squat.jpg',muscles:'Quads (primary), glutes, hamstrings',cues:['Keep back flat against the pad','Feet shoulder-width, toes slightly out','Lower until thighs parallel or below','Drive through heels','Keep knees tracking over toes'],mistakes:['Rounding lower back off the pad','Knees caving inward','Not going deep enough','Hyperextending at the top']},
+  'Dumbbell RDL':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Romanian_deadlift.jpg/320px-Romanian_deadlift.jpg',muscles:'Hamstrings (primary), glutes, lower back',cues:['Soft bend in knees — this is NOT a squat','Hinge at hips, push them back as weights descend','Keep dumbbells close to your legs','Flat back the entire way down','Feel the hamstring stretch, drive hips forward to stand'],mistakes:['Squatting instead of hinging','Rounding the back','Going too heavy and losing form','Not pausing at the bottom']},
+  'DB Bulgarian Split Squat':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bulgarian_split_squat.jpg/320px-Bulgarian_split_squat.jpg',muscles:'Glutes, quads, hamstrings (unilateral)',cues:['Large step forward — torso leans forward slightly','Back foot elevated on bench, laces down','Lower back knee toward the floor','Front foot bears the load — drive through the heel','Keep torso upright or slightly forward'],mistakes:['Front foot too close — knee travels past toes','Too upright — reduces glute engagement','Not lowering far enough','Rushing the movement']},
+  'Lying Leg Curl':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Lying_leg_curl.jpg/320px-Lying_leg_curl.jpg',muscles:'Hamstrings (primary), calves',cues:['Hips stay pressed into the pad throughout','Curl as far as you can for full contraction','Lower slowly — 4-second eccentric','Point toes slightly to maximize hamstring engagement','No jerking or momentum'],mistakes:['Hips lifting off the pad','Using momentum','Incomplete range of motion']},
+  'Moving Plank':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Plank_position.jpg/320px-Plank_position.jpg',muscles:'Core (transverse abdominis, obliques), shoulders',cues:['Walk hands forward and back in a plank position','Body in a straight line — head to heels','Keep hips level — do not let them rise or sag','Brace your core and squeeze glutes throughout','Breathe steadily, move with control'],mistakes:['Hips sagging or piking','Moving too fast','Holding breath']},
+  'Machine Shoulder Press':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Shoulder_press_machine.jpg/320px-Shoulder_press_machine.jpg',muscles:'Anterior deltoid (primary), lateral deltoid, triceps',cues:['Adjust seat so handles are at shoulder height','Press directly overhead','1&1/4 rep: press up, lower 1/4, press back up = 1 rep','Control the descent — 3 seconds down','Keep wrists neutral, stacked over elbows'],mistakes:['Arching the lower back','Partial reps','Elbows flaring too wide']},
+  'Pull Ups – Supinated':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Chinup.jpg/320px-Chinup.jpg',muscles:'Lats (primary), biceps, rear deltoids',cues:['Supinated = palms facing YOU (chin-up grip)','Start from a dead hang — full extension at the bottom','Pull until chin is over the bar','Squeeze shoulder blades together at top','Control the descent — do not drop','Cannot do 3+ reps? Substitute Lat Pulldown Supinated for 6 reps'],mistakes:['Not going through full range of motion','Swinging or kipping','Shrugging shoulders instead of pulling with lats']},
+  'Machine Chest Press – Neutral':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Chest_press_machine.jpg/320px-Chest_press_machine.jpg',muscles:'Pectorals (primary), anterior deltoid, triceps',cues:['Neutral grip = palms facing each other','1&1/4 rep: press out, pull 1/4 back, press fully out = 1 rep','Keep shoulder blades retracted and down','Control the weight back — 3 seconds on return','Feet flat on floor for stability'],mistakes:['Elbows flaring to 90° — reduces pec activation','Shoulders rolling forward at full extension','Bouncing the weight']},
+  'One Arm DB Rows – Dead Stop':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Dumbbell_row.jpg/320px-Dumbbell_row.jpg',muscles:'Lats, rhomboids, rear delts, biceps (unilateral)',cues:['Rest DB on floor between each rep — full dead stop','Pull with your elbow, not your hand','Squeeze the lat hard at the top','Non-working arm braced on bench','Torso roughly parallel to the floor'],mistakes:['Too much torso rotation using momentum','No dead stop on the floor','Pulling with the bicep instead of the back']},
+  'BB Curls':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Barbell_curl.jpg/320px-Barbell_curl.jpg',muscles:'Biceps brachii (primary), brachialis',cues:['Elbows pinned to sides throughout','Control the descent — 2 seconds down','Full extension at bottom — complete range','Squeeze hard at the top','Grip just outside shoulder width'],mistakes:['Swinging torso to curl the weight','Not lowering fully','Elbows drifting forward at top']},
+  'Machine Tricep Extension':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Tricep_extension_machine.jpg/320px-Tricep_extension_machine.jpg',muscles:'Triceps (all three heads)',cues:['Keep upper arms stationary — only forearms move','Full extension at the bottom — squeeze triceps','2-second controlled return','Keep wrists straight throughout','Align elbows with machine pivot point'],mistakes:['Elbows flaring out wide','Not fully extending','Compensating with shoulders']},
+  'Rope Crunches':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Cable_crunch.jpg/320px-Cable_crunch.jpg',muscles:'Rectus abdominis (primary), obliques',cues:['Kneel facing the cable — rope to your ears','Crunch by curling chest toward hips','Pause and squeeze hard at the bottom','Hinge at hips, not just the neck','Keep rope handles stationary at your ears'],mistakes:['Pulling with arms instead of abs','Not achieving full range of motion','Too much weight — lose control']},
+  'BB Romanian Deadlifts':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Romanian_deadlift.jpg/320px-Romanian_deadlift.jpg',muscles:'Hamstrings (primary), glutes, lower back',cues:['Keep barbell close to legs the entire movement','Hinge at hips — push them back','1-second pause at the bottom','Flat back — no rounding','Drive hips forward to return — squeeze glutes at top'],mistakes:['Rounding the lower back','Bar drifting away from body','Going too heavy and losing hip hinge pattern']},
+  'DB Front Foot Elevated Split Squat':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Bulgarian_split_squat.jpg/320px-Bulgarian_split_squat.jpg',muscles:'Quads (primary), glutes, hip flexors',cues:['Front foot elevated on a plate or step','Emphasizes quads more than flat split squat','Lower back knee to floor with control','Keep torso upright','Drive through front heel to stand'],mistakes:['Front knee caving inward','Not using a large enough step','Rushing the descent']},
+  'Leg Press – Feet Middle':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Leg_press.jpg/320px-Leg_press.jpg',muscles:'Quads (primary), glutes, hamstrings',cues:['Feet centered on platform at shoulder width','Pause 1 second at the bottom — no bouncing','Lower until knees reach 90° or below','Do not lock out completely at top','Keep lower back pressed into seat'],mistakes:['Knees caving inward','Hips lifting off seat at bottom','Locking knees at top']},
+  'BB Hip Thrusts':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Hip_thrust.jpg/320px-Hip_thrust.jpg',muscles:'Glutes (primary), hamstrings',cues:['Upper back on bench edge — not your neck','Feet flat, hip-width, knees at 90° at top','Drive through heels — squeeze glutes hard at top','Pause 2 seconds at the top','Chin tucked — avoid hyperextending neck'],mistakes:['Hyperextending lower back — squeeze instead','Feet too far or too close','Bouncing the weight without pausing']},
+  'Glute Medius Kickbacks – Cable':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Cable_kickback.jpg/320px-Cable_kickback.jpg',muscles:'Glute medius (primary), glute minimus',cues:['Ankle strap on cable — kick back and out','Slight forward lean — hold for balance','Pause at full extension — 2 seconds','Keep movement isolated — do not rotate hip'],mistakes:['Rotating torso for more range','No pause at top','Too much weight causing form breakdown']},
+  'Incline Machine Chest Press – Neutral':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Chest_press_machine.jpg/320px-Chest_press_machine.jpg',muscles:'Upper pectorals (primary), anterior delts, triceps',cues:['Incline targets upper chest more than flat','Keep shoulder blades squeezed back','Full range of motion','Last set: Drop Set — reduce weight immediately, continue','Control the return — 2 seconds'],mistakes:['Flaring elbows excessively','Partial reps','Losing shoulder blade retraction as fatigue sets in']},
+  'Lat Pulldown – Mid Pronated':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Lat_pulldown.jpg/320px-Lat_pulldown.jpg',muscles:'Latissimus dorsi (primary), biceps, rear delts',cues:['Grip slightly wider than shoulder width, palms away','Pull bar to upper chest — not behind neck','Squeeze lats at bottom — hold briefly','Slight lean back — not excessive','Control the return — full stretch at top'],mistakes:['Pulling behind the neck — injury risk','Momentum on the pull','No stretch at the top']},
+  'Standing DB Lateral Raises':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Lateral_raise.jpg/320px-Lateral_raise.jpg',muscles:'Lateral deltoid (primary)',cues:['Slight bend in elbows throughout','Raise to shoulder height — lead with elbows','Pinky slightly higher than thumb at top','2-second controlled lower','Last set: Drop Set immediately to lighter weight'],mistakes:['Shrugging traps — keep shoulders down','Swinging weight up with momentum','Going above shoulder height']},
+  'Seated Row – Neutral':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Cable_row.jpg/320px-Cable_row.jpg',muscles:'Lats, rhomboids, mid-traps, biceps',cues:['Neutral grip = palms facing each other','Pull to lower chest — not the chin','Squeeze shoulder blades hard at the end','Slow return — 2 seconds','Keep torso upright — no rocking'],mistakes:['Leaning too far back using momentum','Pulling too high toward chin','Not squeezing shoulder blades at peak']},
+  'Rope Face Pull':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Face_pull.jpg/320px-Face_pull.jpg',muscles:'Rear deltoids, rotator cuff, mid-traps',cues:['Cable at face height or slightly above','Pull toward face — elbows high and wide','Externally rotate at end — hands behind ears','Pause briefly at full contraction','Keep shoulder blades retracted throughout'],mistakes:['Pulling too low — becomes a row','Elbows dropping below shoulders','Not achieving external rotation']},
+  'Cable Bicep Curls':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Barbell_curl.jpg/320px-Barbell_curl.jpg',muscles:'Biceps (primary)',cues:['Stand close to cable machine','Elbows pinned at sides','Squeeze hard at top','Control the negative — cable maintains tension throughout','15-second rest before Rope Tricep Pushdowns'],mistakes:['Swinging the torso','Letting cable pull arms back uncontrolled']},
+  'Rope Tricep Pushdowns':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Tricep_extension_machine.jpg/320px-Tricep_extension_machine.jpg',muscles:'Triceps (primary)',cues:['Split rope at bottom of each rep','Push to full extension — squeeze','Pause 2 seconds at the bottom','Upper arms stay pinned to sides','Keep wrists neutral'],mistakes:['Elbows flaring forward','Not pausing at bottom','Bending forward to use too much weight']},
+  'Lying Leg Raises':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Leg_raises.jpg/320px-Leg_raises.jpg',muscles:'Lower rectus abdominis, hip flexors',cues:['Lie flat, hands under lower back for support','Legs straight or very slightly bent','Lower until just above floor — do not let them rest','Raise back to vertical in controlled arc','Breathe out on the way up'],mistakes:['Lower back arching off the floor','Legs dropping uncontrolled','Too much knee bend']},
+  'Kas Glute Bridge':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Hip_thrust.jpg/320px-Hip_thrust.jpg',muscles:'Glutes (primary), hamstrings',cues:['Upper back stays on the FLOOR — different from hip thrust','Feet flat, knees bent, hip-width apart','Drive hips up — squeeze glutes hard at top','Lower slowly — no bouncing','Prisoner style = hands above head if DB too heavy'],mistakes:['Hyperextending lower back','Dropping hips too quickly','Too much weight before mastering the movement']},
+  'Leg Press – Feet High and Wide':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Leg_press.jpg/320px-Leg_press.jpg',muscles:'Glutes and inner thighs (primary), hamstrings',cues:['Feet high on platform — more glute engagement','Wide stance — targets inner thighs','Descend until knees close to 90°','Drive through heels','Do not lock knees at top'],mistakes:['Hips lifting off seat','Knees caving inward','Locking out at top']},
+  '45° Back Extension – DB Behind Head':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Back_extension.jpg/320px-Back_extension.jpg',muscles:'Glutes (primary), hamstrings, lower back',cues:['Hold DB behind head or across chest','Hinge at hips — do not round spine','Rise until body is in a straight line','Squeeze glutes hard at top','Prisoner style if DB is too heavy'],mistakes:['Hyperextending beyond straight line at top','Rounding lower back at bottom','Going too fast — use slow controlled reps']},
+  'Leg Extensions':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Leg_extension.jpg/320px-Leg_extension.jpg',muscles:'Quadriceps (all four heads)',cues:['Pad just above the ankles','Extend until legs nearly straight','Squeeze quads hard at top','2-second controlled lowering','Back pressed into seat'],mistakes:['Jerking weight up with momentum','Not reaching full extension','Hips lifting off seat']},
+  'Seated Leg Curls':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Lying_leg_curl.jpg/320px-Lying_leg_curl.jpg',muscles:'Hamstrings (primary)',cues:['Pad just above heels','Curl all the way down — full range','Squeeze hard at full contraction','Slow return — 2 seconds','Lower back pressed into seat'],mistakes:['Partial range of motion','Using momentum','Hips lifting off seat']},
+  'Standing Straight Leg Abductions – Banded':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Cable_kickback.jpg/320px-Cable_kickback.jpg',muscles:'Glute medius, glute minimus, TFL',cues:['Band just above knees or around ankles','Keep working leg straight','Kick directly out to the side — not behind','Hold something for balance','1 second up, 1 second down per tempo'],mistakes:['Rotating hip instead of pure abduction','Not keeping working leg straight','Leaning too far to non-working side']},
+  'Banded Kickbacks':{imgFallback:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Cable_kickback.jpg/320px-Cable_kickback.jpg',muscles:'Glutes (primary), hamstrings',cues:['Band around ankles','Slight forward lean, hand on something for support','Kick straight back — pause at full extension','1 second up, 1 second down','Keep hip square — do not rotate'],mistakes:['Rotating torso for more range','No pause at top','Using too much momentum']},
 };
 
+// ── SESSIONS & WORKOUTS ─────────────────────────────────────
 const SESSIONS=[
-  {id:'lower1',label:'Lower 1',full:'Lower Heavy',type:'workout'},
-  {id:'upper1',label:'Upper 1',full:'Upper Heavy',type:'workout'},
+  {id:'lower1',label:'Lower 1',full:'Lower Heavy',  type:'workout'},
+  {id:'upper1',label:'Upper 1',full:'Upper Heavy',  type:'workout'},
   {id:'lower2',label:'Lower 2',full:'Lower Moderate',type:'workout'},
-  {id:'upper2',label:'Upper 2',full:'Upper Light',type:'workout'},
-  {id:'lower3',label:'Lower 3',full:'Lower Light',type:'workout'},
+  {id:'upper2',label:'Upper 2',full:'Upper Light',  type:'workout'},
+  {id:'lower3',label:'Lower 3',full:'Lower Light',  type:'workout'},
   {id:'cardio', label:'Cardio', full:'Cardio',       type:'cardio'},
 ];
 
 const WK={
   'Lower Heavy':{tag:'Heavy · 4×6',exercises:[
-    {id:'A', name:'Hack Squat Machine',note:'Add weight each week. Full depth.',sets:4,reps:'6',rest:180,tempo:'3010'},
-    {id:'B', name:'Dumbbell RDL',note:'Replaces conventional deadlift. 1s pause at bottom.',sets:4,reps:'6',rest:180,tempo:'2110'},
-    {id:'C1',name:'DB Bulgarian Split Squat',note:'Large step, torso leaning forward.',sets:4,reps:'6 each leg',rest:90,tempo:'3010'},
-    {id:'C2',name:'Lying Leg Curl',note:'Slow eccentrics — 4s down.',sets:4,reps:'6',rest:90,tempo:'4010'},
-    {id:'D', name:'Moving Plank',note:'Smith Machine if available. Pause 2s at top.',sets:3,reps:'30s',rest:45,tempo:'-'},
+    {id:'A', name:'Hack Squat Machine',         note:'Full depth. Add weight each week.',sets:4,reps:'6',rest:180,tempo:'3010'},
+    {id:'B', name:'Dumbbell RDL',               note:'1s pause at bottom. Same muscles as conventional deadlift.',sets:4,reps:'6',rest:180,tempo:'2110'},
+    {id:'C1',name:'DB Bulgarian Split Squat',   note:'Large step, torso leaning forward.',sets:4,reps:'6 each leg',rest:90,tempo:'3010'},
+    {id:'C2',name:'Lying Leg Curl',             note:'4-second slow eccentric.',sets:4,reps:'6',rest:90,tempo:'4010'},
+    {id:'D', name:'Moving Plank',               note:'Walk hands forward and back in plank. 30 seconds per set.',sets:3,reps:'30s',rest:45,tempo:'-'},
   ]},
   'Upper Heavy':{tag:'Heavy · 4×6',exercises:[
-    {id:'A1',name:'Machine Shoulder Press',note:'1&1/4 reps at bottom.',sets:4,reps:'6',rest:100,tempo:'3010'},
-    {id:'A2',name:'Pull Ups – Supinated',note:'Cannot do 3+ reps? Lat pulldown supinated for 6.',sets:4,reps:'Max',rest:100,tempo:'2010'},
-    {id:'B1',name:'Machine Chest Press – Neutral',note:'1&1/4 reps at bottom.',sets:4,reps:'6',rest:45,tempo:'3010'},
-    {id:'B2',name:'One Arm DB Rows – Dead Stop',note:'Rest DB on floor 2s between reps.',sets:4,reps:'6 each arm',rest:90,tempo:'2210'},
-    {id:'C1',name:'BB Curls',sets:3,reps:'8',rest:60,tempo:'2010'},
-    {id:'C2',name:'Machine Tricep Extension',note:'Replaces BB skull crushers.',sets:3,reps:'8',rest:60,tempo:'2010'},
-    {id:'D', name:'Rope Crunches',note:'Pause at bottom.',sets:3,reps:'10',rest:60,tempo:'2012'},
+    {id:'A1',name:'Machine Shoulder Press',          note:'1&1/4 reps at bottom.',sets:4,reps:'6',rest:100,tempo:'3010'},
+    {id:'A2',name:'Pull Ups – Supinated',            note:'Palms facing you. Cannot do 3+? Do Lat Pulldown Supinated for 6 reps instead.',sets:4,reps:'Max',rest:100,tempo:'2010'},
+    {id:'B1',name:'Machine Chest Press – Neutral',   note:'1&1/4 reps at bottom.',sets:4,reps:'6',rest:45,tempo:'3010'},
+    {id:'B2',name:'One Arm DB Rows – Dead Stop',     note:'Rest DB on floor 2s between every rep.',sets:4,reps:'6 each arm',rest:90,tempo:'2210'},
+    {id:'C1',name:'BB Curls',                        sets:3,reps:'8',rest:60,tempo:'2010'},
+    {id:'C2',name:'Machine Tricep Extension',        note:'Replaces BB skull crushers.',sets:3,reps:'8',rest:60,tempo:'2010'},
+    {id:'D', name:'Rope Crunches',                   note:'Pause at bottom.',sets:3,reps:'10',rest:60,tempo:'2012'},
   ]},
   'Lower Moderate':{tag:'Moderate · 4×8-10',exercises:[
-    {id:'A1',name:'BB Romanian Deadlifts',note:'Pause 1s at bottom.',sets:4,reps:'8-10',rest:90,tempo:'2010'},
-    {id:'A2',name:'DB Front Foot Elevated Split Squat',sets:4,reps:'8-10 each leg',rest:90,tempo:'2010'},
-    {id:'B', name:'Leg Press – Feet Middle',note:'Pause 1s at bottom.',sets:4,reps:'8-10',rest:120,tempo:'2110'},
-    {id:'C', name:'BB Hip Thrusts',note:'Smith Machine if available. Pause 2s at top. Last set: Rest Pause ×1.',sets:4,reps:'8-10',rest:120,tempo:'2012'},
-    {id:'D', name:'Glute Medius Kickbacks – Cable',sets:3,reps:'8-10 each leg',rest:75,tempo:'2010'},
+    {id:'A1',name:'BB Romanian Deadlifts',              note:'Pause 1s at bottom.',sets:4,reps:'8-10',rest:90,tempo:'2010'},
+    {id:'A2',name:'DB Front Foot Elevated Split Squat', sets:4,reps:'8-10 each leg',rest:90,tempo:'2010'},
+    {id:'B', name:'Leg Press – Feet Middle',            note:'Pause 1s at bottom.',sets:4,reps:'8-10',rest:120,tempo:'2110'},
+    {id:'C', name:'BB Hip Thrusts',                     note:'Smith Machine if available. Pause 2s at top. Last set: Rest Pause ×1.',sets:4,reps:'8-10',rest:120,tempo:'2012'},
+    {id:'D', name:'Glute Medius Kickbacks – Cable',     sets:3,reps:'8-10 each leg',rest:75,tempo:'2010'},
   ]},
   'Upper Light':{tag:'Light · 3×20,15,12',exercises:[
     {id:'A', name:'Incline Machine Chest Press – Neutral',note:'Last set: Drop Set ×1.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
-    {id:'B', name:'Lat Pulldown – Mid Pronated',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
-    {id:'C', name:'Standing DB Lateral Raises',note:'Last set: Drop Set ×1.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
-    {id:'D', name:'Seated Row – Neutral',note:'Last set: Drop Set ×1.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
-    {id:'E', name:'Rope Face Pull',sets:3,reps:'20,15,12',rest:60,tempo:'2010'},
-    {id:'F1',name:'Cable Bicep Curls',sets:3,reps:'15',rest:15,tempo:'2010'},
-    {id:'F2',name:'Rope Tricep Pushdowns',note:'Pause 2s at top.',sets:3,reps:'10',rest:60,tempo:'2012'},
-    {id:'G', name:'Lying Leg Raises',sets:3,reps:'10',rest:45,tempo:'2010'},
-    {id:'H', name:'BB Hip Thrusts',note:'Smith Machine if available. Pause 2s at top.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
+    {id:'B', name:'Lat Pulldown – Mid Pronated',          sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
+    {id:'C', name:'Standing DB Lateral Raises',           note:'Last set: Drop Set ×1.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
+    {id:'D', name:'Seated Row – Neutral',                 note:'Last set: Drop Set ×1.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
+    {id:'E', name:'Rope Face Pull',                       sets:3,reps:'20,15,12',rest:60,tempo:'2010'},
+    {id:'F1',name:'Cable Bicep Curls',                    sets:3,reps:'15',rest:15,tempo:'2010'},
+    {id:'F2',name:'Rope Tricep Pushdowns',                note:'Pause 2s at top.',sets:3,reps:'10',rest:60,tempo:'2012'},
+    {id:'G', name:'Lying Leg Raises',                     sets:3,reps:'10',rest:45,tempo:'2010'},
+    {id:'H', name:'BB Hip Thrusts',                       note:'Smith Machine if available. Pause 2s at top.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
   ]},
   'Lower Light':{tag:'Light · 4×20,15,12,10',exercises:[
-    {id:'A', name:'Kas Glute Bridge',note:'Prisoner style if DB too heavy.',sets:4,reps:'20,15,12,10',rest:90,tempo:'2010'},
-    {id:'B', name:'Leg Press – Feet High and Wide',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
-    {id:'C', name:'45° Back Extension – DB Behind Head',note:'Prisoner style if DB too heavy.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
-    {id:'D', name:'Leg Extensions',sets:4,reps:'20,15,12,10',rest:90,tempo:'2010'},
-    {id:'E', name:'Seated Leg Curls',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
+    {id:'A', name:'Kas Glute Bridge',                        note:'Prisoner style if DB too heavy.',sets:4,reps:'20,15,12,10',rest:90,tempo:'2010'},
+    {id:'B', name:'Leg Press – Feet High and Wide',          sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
+    {id:'C', name:'45° Back Extension – DB Behind Head',     note:'Prisoner style if DB too heavy.',sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
+    {id:'D', name:'Leg Extensions',                          sets:4,reps:'20,15,12,10',rest:90,tempo:'2010'},
+    {id:'E', name:'Seated Leg Curls',                        sets:3,reps:'20,15,12',rest:90,tempo:'2010'},
     {id:'F1',name:'Standing Straight Leg Abductions – Banded',sets:2,reps:'12-15 each leg',rest:15,tempo:'1010'},
-    {id:'F2',name:'Banded Kickbacks',sets:2,reps:'12-15 each leg',rest:60,tempo:'1010'},
+    {id:'F2',name:'Banded Kickbacks',                         sets:2,reps:'12-15 each leg',rest:60,tempo:'1010'},
   ]},
 };
 
 const CARDIO_EXERCISES=[
-  {id:'stair',name:'Stair Machine',icon:'🪜'},
-  {id:'treadmill',name:'Treadmill Incline Walk',icon:'🚶'},
-  {id:'bike',name:'Stationary Bike',icon:'🚴'},
-  {id:'rowing',name:'Rowing Machine',icon:'🚣'},
-  {id:'elliptical',name:'Elliptical',icon:'⭕'},
+  {id:'stair',     name:'Stair Machine',       icon:'🪜'},
+  {id:'treadmill', name:'Treadmill Incline Walk',icon:'🚶'},
+  {id:'bike',      name:'Stationary Bike',      icon:'🚴'},
+  {id:'rowing',    name:'Rowing Machine',       icon:'🚣'},
+  {id:'elliptical',name:'Elliptical',           icon:'⭕'},
 ];
 
 const PRE=[{l:'45s',v:45},{l:'60s',v:60},{l:'90s',v:90},{l:'2m',v:120},{l:'3m',v:180},{l:'4m',v:240}];
-let cur=0, tInt=null, running=false, secs=180, preset=180;
-// workout state: sets stored as {weight, reps, done} per exercise
-// state[sessId][exId] = [{weight,reps,done}, ...]
-let state={};
-// cardio state
-let cardioState={};
-let cardioTimers={};
-// photo
+let cur=0,tInt=null,running=false,secs=180,preset=180;
+let state={}, cardioState={}, cardioTimers={};
 let photoBase64=null;
-let workoutStartTime=Date.now();
+let activeExModal='';
 
-// ---- local storage ----
-function ls(k,v){if(v===undefined){try{return JSON.parse(localStorage.getItem('kw2_'+k));}catch(e){return null;}}try{localStorage.setItem('kw2_'+k,JSON.stringify(v));}catch(e){}}
+// ── STORAGE ──────────────────────────────────────────────────
+function ls(k,v){
+  if(v===undefined){try{return JSON.parse(localStorage.getItem('kw3_'+k));}catch(e){return null;}}
+  try{localStorage.setItem('kw3_'+k,JSON.stringify(v));}catch(e){}
+}
 function getSheetUrl(){return ls('sheetUrl')||'';}
-function saveSheetUrl2(){
+function saveSheetUrl(){
   const val=document.getElementById('sheetUrlInput').value.trim();
   if(!val||!val.startsWith('https://')){toast('Paste a valid URL','err');return;}
   ls('sheetUrl',val);renderSetupBanner();
-  toast('Saved! Testing...','');
+  toast('Testing connection...','');
   fetch(val,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({test:true})})
     .then(()=>toast('Connected ✓','ok')).catch(()=>toast('Saved — verify on next submit',''));
 }
-function saveSheetUrl(){saveSheetUrl2();}
 
-// ---- state helpers ----
-function getSessState(sessId,exId){
+// ── STATE HELPERS ─────────────────────────────────────────────
+function initSets(sessId,ex){
   if(!state[sessId])state[sessId]={};
-  if(!state[sessId][exId])state[sessId][exId]=[{weight:'',reps:'',done:false}];
-  return state[sessId][exId];
+  if(!state[sessId][ex.id]){
+    // pre-fill correct number of sets from program
+    state[sessId][ex.id]=Array.from({length:ex.sets},()=>({weight:'',reps:'',done:false}));
+  }
+  return state[sessId][ex.id];
 }
 function saveState(){ls('state',state);ls('cardioState',cardioState);}
 function loadState(){
@@ -369,7 +374,22 @@ function loadState(){
   const c=ls('cardioState');if(c)cardioState=c;
 }
 
-// ---- timer ----
+// ── PREVIOUS BEST ─────────────────────────────────────────────
+function getPrevBest(exName){
+  // look across all sessions and weeks for completed sets with weight
+  const hist=ls('history_'+exName)||[];
+  if(!hist.length)return null;
+  // find most recent entry
+  const sorted=hist.slice().sort((a,b)=>b.ts-a.ts);
+  return sorted[0];
+}
+function addToHistory(exName,weight,reps,week,session){
+  const hist=ls('history_'+exName)||[];
+  hist.unshift({weight,reps,week,session,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),ts:Date.now()});
+  ls('history_'+exName,hist.slice(0,50));
+}
+
+// ── TIMER ─────────────────────────────────────────────────────
 function pad(n){return String(n).padStart(2,'0')}
 function fmt(s){return Math.floor(Math.max(0,s)/60)+':'+pad(Math.max(0,s)%60)}
 function renderPresets(){document.getElementById('presets').innerHTML=PRE.map(p=>`<button class="ft-pre${p.v===preset?' on':''}" onclick="setPreset(${p.v})">${p.l}</button>`).join('');}
@@ -390,18 +410,18 @@ function fireTimer(r,label){
   document.getElementById('tNum').textContent=fmt(secs);
   document.getElementById('tNum').className='ft-num';
   document.getElementById('togBtn').textContent='Start';
-  document.getElementById('timerLabel').textContent='Rest after: '+label;
+  document.getElementById('timerLabel').textContent='Resting: '+label;
   toggleTimer();
   document.getElementById('floatTimer').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// ---- progress ----
+// ── PROGRESS ─────────────────────────────────────────────────
 function calcProg(){
   const sess=SESSIONS[cur];if(sess.type==='cardio')return[0,0];
   const w=WK[sess.full];if(!w)return[0,0];
   let tot=0,done=0;
   w.exercises.forEach(ex=>{
-    const rows=getSessState(sess.id,ex.id);
+    const rows=state[sess.id]?.[ex.id]||[];
     rows.forEach(r=>{tot++;if(r.done)done++;});
   });
   return[done,tot];
@@ -413,22 +433,19 @@ function updateProgress(){
   document.getElementById('progText').textContent=done+' of '+tot+' sets';
   document.getElementById('progPct').textContent=tot?pct+'%':'';
 }
-
-// ---- calculate volume ----
 function calcVolume(){
-  const sess=SESSIONS[cur];
-  let vol=0;
-  if(sess.type==='workout'){
-    const w=WK[sess.full];if(!w)return 0;
-    w.exercises.forEach(ex=>{
-      const rows=getSessState(sess.id,ex.id);
-      rows.forEach(r=>{if(r.done&&r.weight&&r.reps){const wt=parseFloat(r.weight)||0;const rp=parseFloat(r.reps)||0;vol+=wt*rp;}});
+  const sess=SESSIONS[cur];let vol=0;
+  if(sess.type!=='workout')return 0;
+  const w=WK[sess.full];if(!w)return 0;
+  w.exercises.forEach(ex=>{
+    (state[sess.id]?.[ex.id]||[]).forEach(r=>{
+      if(r.done&&r.weight&&r.reps)vol+=(parseFloat(r.weight)||0)*(parseFloat(r.reps)||0);
     });
-  }
+  });
   return Math.round(vol);
 }
 
-// ---- tabs ----
+// ── TABS ──────────────────────────────────────────────────────
 function renderTabs(){
   document.getElementById('tabs').innerHTML=SESSIONS.map((s,i)=>
     `<button class="tab${i===cur?' active':''}${s.type==='cardio'?' cardio-tab':''}" onclick="selectSession(${i})">${s.label}</button>`
@@ -436,106 +453,196 @@ function renderTabs(){
 }
 function selectSession(i){cur=i;renderTabs();renderSession();}
 
-// ---- exercise info modal ----
+// ── MODAL TABS ────────────────────────────────────────────────
+function switchModalTab(tab){
+  document.getElementById('infoTab').className='modal-tab'+(tab==='info'?' active':'');
+  document.getElementById('histTab').className='modal-tab'+(tab==='hist'?' active':'');
+  document.getElementById('exModalInfo').style.display=tab==='info'?'':'none';
+  document.getElementById('exModalHist').style.display=tab==='hist'?'':'none';
+}
+
+// ── EXERCISE INFO MODAL ───────────────────────────────────────
 function openExInfo(name){
-  const info=EXERCISE_INFO[name];
+  activeExModal=name;
+  const info=EX_INFO[name]||{};
   document.getElementById('exModalTitle').textContent=name;
-  if(!info){
-    document.getElementById('exModalBody').innerHTML=`<p style="color:var(--text2);font-size:13px">No info available for this exercise yet.</p>`;
-  } else {
-    document.getElementById('exModalBody').innerHTML=`
-      <div class="ex-img-placeholder">${info.emoji}</div>
-      <div class="info-section">
-        <div class="info-label">Muscles Worked</div>
-        <div class="info-body">${info.muscles}</div>
-      </div>
-      <div class="info-section">
-        <div class="info-label">Form Cues</div>
-        <div class="info-body"><ul>${info.cues.map(c=>`<li>${c}</li>`).join('')}</ul></div>
-      </div>
-      <div class="info-section">
-        <div class="info-label">Common Mistakes</div>
-        <div class="info-body"><ul>${info.mistakes.map(m=>`<li>${m}</li>`).join('')}</ul></div>
-      </div>`;
-  }
+  switchModalTab('info');
+
+  // illustration — try wger CDN pattern, fallback to wikipedia
+  const imgSrc=info.imgFallback||'';
+  const imgHtml=imgSrc
+    ?`<div class="ex-illus-wrap"><img class="ex-illus" src="${imgSrc}" alt="${name}" onerror="this.parentElement.innerHTML='<div style=\\'font-size:48px;text-align:center\\'>${info.emoji||'💪'}</div>'"/></div>`
+    :`<div class="ex-illus-wrap" style="font-size:48px;text-align:center">${info.emoji||'💪'}</div>`;
+
+  document.getElementById('exModalInfo').innerHTML=`
+    ${imgHtml}
+    <div class="info-section">
+      <div class="info-label">Muscles Worked</div>
+      <div class="info-body">${info.muscles||'See program guide'}</div>
+    </div>
+    <div class="info-section">
+      <div class="info-label">Form Cues</div>
+      <div class="info-body"><ul>${(info.cues||[]).map(c=>`<li>${c}</li>`).join('')}</ul></div>
+    </div>
+    <div class="info-section">
+      <div class="info-label">Common Mistakes</div>
+      <div class="info-body"><ul>${(info.mistakes||[]).map(m=>`<li>${m}</li>`).join('')}</ul></div>
+    </div>`;
+
+  renderExHistory(name);
   document.getElementById('exModal').style.display='flex';
 }
 
-// ---- set management ----
+function renderExHistory(name){
+  const hist=ls('history_'+name)||[];
+  const el=document.getElementById('exModalHist');
+  if(!hist.length){
+    el.innerHTML=`<div class="empty-hist">No history yet for this exercise.<br>Complete some sets and they'll appear here.</div>`;
+    return;
+  }
+  el.innerHTML=`<div class="info-label" style="margin-bottom:10px">All Logged Sets</div>`+
+    hist.map(h=>`
+      <div class="hist-row">
+        <div>
+          <div class="hist-week">${h.week} · ${h.session||''}</div>
+          <div class="hist-detail">${h.date}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="hist-week">${h.weight} lbs × ${h.reps} reps</div>
+          <div class="hist-vol">${((parseFloat(h.weight)||0)*(parseFloat(h.reps)||0)).toFixed(0)} lbs volume</div>
+        </div>
+      </div>`).join('');
+}
+
+// ── SET MANAGEMENT ────────────────────────────────────────────
 function addSet(sessId,exId){
-  getSessState(sessId,exId).push({weight:'',reps:'',done:false});
+  if(!state[sessId])state[sessId]={};
+  if(!state[sessId][exId])state[sessId][exId]=[];
+  state[sessId][exId].push({weight:'',reps:'',done:false});
   saveState();renderSession();
 }
 function removeSet(sessId,exId,idx){
-  const rows=getSessState(sessId,exId);
+  const rows=state[sessId]?.[exId]||[];
   if(rows.length>1)rows.splice(idx,1);
   saveState();renderSession();
 }
-function updateSetField(sessId,exId,idx,field,val){
-  getSessState(sessId,exId)[idx][field]=val;
+function updateField(sessId,exId,idx,field,val){
+  if(!state[sessId])state[sessId]={};
+  if(!state[sessId][exId])state[sessId][exId]=[];
+  state[sessId][exId][idx][field]=val;
   saveState();
 }
 function toggleSetDone(sessId,exId,idx,restSecs,exName){
-  const rows=getSessState(sessId,exId);
+  if(!state[sessId])state[sessId]={};
+  const rows=state[sessId][exId]||[];
   rows[idx].done=!rows[idx].done;
-  if(rows[idx].done)fireTimer(restSecs,exName);
+  if(rows[idx].done){
+    fireTimer(restSecs,exName);
+    const r=rows[idx];
+    const week='Week '+document.getElementById('weekSel').value;
+    const sess=SESSIONS[cur].label;
+    if(r.weight&&r.reps)addToHistory(exName,r.weight,r.reps,week,sess);
+  }
   saveState();updateProgress();renderSession();
 }
 
-// ---- cardio timers ----
+// ── CARDIO ────────────────────────────────────────────────────
 function startCardioTimer(id){
-  if(cardioTimers[id]){clearInterval(cardioTimers[id].interval);delete cardioTimers[id];renderSession();return;}
+  if(cardioTimers[id])return;
   const startAt=Date.now();
-  cardioTimers[id]={startAt,elapsed:cardioState[id]?.elapsed||0,interval:null};
-  cardioTimers[id].interval=setInterval(()=>{
-    const elapsed=cardioTimers[id].elapsed+Math.floor((Date.now()-startAt)/1000);
+  const prevElapsed=cardioState[id]?.elapsed||0;
+  cardioTimers[id]={startAt,prevElapsed};
+  const tick=setInterval(()=>{
+    const el=document.getElementById('ctelapsed_'+id);
     const btn=document.getElementById('ctbtn_'+id);
-    const disp=document.getElementById('ctelapsed_'+id);
+    if(!el){clearInterval(tick);return;}
+    const elapsed=prevElapsed+Math.floor((Date.now()-startAt)/1000);
+    el.textContent=fmt(elapsed);
     if(btn)btn.textContent='Stop';
-    if(disp)disp.textContent=fmt(elapsed);
   },1000);
+  cardioTimers[id].tick=tick;
   renderSession();
 }
 function stopCardioTimer(id){
   if(!cardioTimers[id])return;
-  const elapsed=cardioTimers[id].elapsed+Math.floor((Date.now()-cardioTimers[id].startAt)/1000);
-  clearInterval(cardioTimers[id].interval);
+  const elapsed=(cardioState[id]?.elapsed||0)+Math.floor((Date.now()-cardioTimers[id].startAt)/1000);
+  clearInterval(cardioTimers[id].tick);
   delete cardioTimers[id];
   if(!cardioState[id])cardioState[id]={};
   cardioState[id].elapsed=elapsed;
   saveState();renderSession();
 }
+function updateCardioNote(id,val){
+  if(!cardioState[id])cardioState[id]={};
+  cardioState[id].notes=val;saveState();
+}
+function updateCardioManual(id,val){
+  if(!cardioState[id])cardioState[id]={};
+  cardioState[id].manualMinutes=val;saveState();
+}
+function addCustomCardio(sessId){
+  const name=document.getElementById('customCardioName').value.trim();
+  if(!name)return;
+  if(!cardioState[sessId+'_custom'])cardioState[sessId+'_custom']=[];
+  cardioState[sessId+'_custom'].push({name,elapsed:0});
+  saveState();renderSession();
+}
+function removeCustomCardio(sessId,i){
+  if(cardioState[sessId+'_custom'])cardioState[sessId+'_custom'].splice(i,1);
+  saveState();renderSession();
+}
 
-// ---- render ----
+// ── PHOTO ─────────────────────────────────────────────────────
+function handlePhoto(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    photoBase64=e.target.result;
+    const area=document.getElementById('photoArea');
+    if(area)area.className='photo-area has-photo';
+    if(area)area.textContent='📸 Photo ready — tap to change';
+    const prev=document.getElementById('photoPreview');
+    if(prev){prev.src=photoBase64;prev.style.display='block';}
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── RENDER SESSION ────────────────────────────────────────────
 function renderSession(){
   const sess=SESSIONS[cur];
   const mc=document.getElementById('mainContent');
-  if(sess.type==='cardio'){renderCardio(mc);return;}
+  if(sess.type==='cardio'){renderCardio(mc,sess);return;}
   const w=WK[sess.full];if(!w){mc.innerHTML='';return;}
   updateProgress();
   const week=parseInt(document.getElementById('weekSel').value);
+
   const cards=w.exercises.map(ex=>{
-    const rows=getSessState(sess.id,ex.id);
-    const allDone=rows.every(r=>r.done)&&rows.length>0;
+    const rows=initSets(sess.id,ex);
+    const allDone=rows.length>0&&rows.every(r=>r.done);
+    const prev=getPrevBest(ex.name);
+    const prevBadge=prev?`<span class="prev-badge">Prev: ${prev.weight}lbs × ${prev.reps}</span>`:'';
+
     const setRows=rows.map((r,i)=>`
       <tr>
         <td>${i+1}</td>
         <td><input class="set-input" type="number" inputmode="decimal" placeholder="lbs" value="${r.weight||''}"
-          onchange="updateSetField('${sess.id}','${ex.id}',${i},'weight',this.value)"
-          oninput="updateSetField('${sess.id}','${ex.id}',${i},'weight',this.value)"/></td>
-        <td><input class="set-input" type="number" inputmode="decimal" placeholder="reps" value="${r.reps||''}"
-          onchange="updateSetField('${sess.id}','${ex.id}',${i},'reps',this.value)"
-          oninput="updateSetField('${sess.id}','${ex.id}',${i},'reps',this.value)"/></td>
+          oninput="updateField('${sess.id}','${ex.id}',${i},'weight',this.value)"/></td>
+        <td><input class="set-input" type="number" inputmode="decimal" placeholder="${ex.reps}" value="${r.reps||''}"
+          oninput="updateField('${sess.id}','${ex.id}',${i},'reps',this.value)"/></td>
         <td><div class="set-check${r.done?' done':''}" onclick="toggleSetDone('${sess.id}','${ex.id}',${i},${ex.rest},'${ex.name.replace(/'/g,"\\'")}')">✓</div></td>
         <td><button class="del-set" onclick="removeSet('${sess.id}','${ex.id}',${i})">✕</button></td>
       </tr>`).join('');
+
     return `<div class="ex-card${allDone?' complete':''}">
       <div class="ex-head">
         <span class="ex-letter">${ex.id}</span>
-        <div>
-          <button class="ex-name-btn" onclick="openExInfo('${ex.name.replace(/'/g,"\\'")}')">
-            ${ex.name}
-          </button>
+        <div class="ex-name-wrap">
+          <div class="ex-name-row">
+            <button class="ex-name-btn" onclick="openExInfo('${ex.name.replace(/'/g,"\\'")}')">
+              ${ex.name}
+            </button>
+            ${prevBadge}
+          </div>
           ${ex.note?`<div class="ex-note">${ex.note}</div>`:''}
         </div>
       </div>
@@ -556,107 +663,84 @@ function renderSession(){
   const vol=calcVolume();
   mc.innerHTML=`<div class="section-lbl">${w.tag}</div>${cards}
     <div class="complete-section">
-      <div class="complete-title">Complete Workout</div>
-      <div class="volume-display">${vol.toLocaleString()} lbs</div>
+      <div class="complete-title">Submit to Workout Log</div>
+      <div class="volume-display" id="liveVol">${vol.toLocaleString()} lbs</div>
       <div class="volume-label">total volume this session</div>
-      <div class="photo-upload-area" id="photoArea" onclick="document.getElementById('photoInput').click()">
-        ${photoBase64?'📸 Photo ready — tap to change':'📸 Tap to add a progress photo (optional)'}
+      <div class="photo-area" id="photoArea" onclick="document.getElementById('photoInput').click()">
+        📸 Tap to add a progress photo (optional)
       </div>
       <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)"/>
       <img id="photoPreview" class="photo-preview" src="" alt="preview"/>
-      <button class="complete-btn" onclick="completeWorkout()">Submit to Google Sheets ✓</button>
+      <button class="complete-btn" onclick="completeWorkout()">Submit to Workout Log ✓</button>
     </div>`;
 }
 
-function renderCardio(mc){
+function renderCardio(mc,sess){
   document.getElementById('progFill').style.width='0%';
   document.getElementById('progText').textContent='Cardio day';
   document.getElementById('progPct').textContent='';
   const week=parseInt(document.getElementById('weekSel').value);
   const sessId='cardio_w'+week;
+
   const cards=CARDIO_EXERCISES.map(ex=>{
-    const cs=cardioState[sessId+'_'+ex.id]||{};
-    const running=!!cardioTimers[sessId+'_'+ex.id];
-    const elapsed=running
-      ?(cs.elapsed||0)+Math.floor((Date.now()-(cardioTimers[sessId+'_'+ex.id]?.startAt||Date.now()))/1000)
+    const id=sessId+'_'+ex.id;
+    const cs=cardioState[id]||{};
+    const isRunning=!!cardioTimers[id];
+    const elapsed=isRunning
+      ?(cs.elapsed||0)+Math.floor((Date.now()-(cardioTimers[id]?.startAt||Date.now()))/1000)
       :(cs.elapsed||0);
+    const manualMin=cs.manualMinutes||'';
     return `<div class="cardio-card">
       <div class="cardio-name">${ex.icon} ${ex.name}</div>
       <div class="cardio-row">
-        <label>Duration</label>
-        <span class="cardio-elapsed" id="ctelapsed_${sessId+'_'+ex.id}">${fmt(elapsed)}</span>
-        <button class="cardio-timer-btn" id="ctbtn_${sessId+'_'+ex.id}" onclick="${running?'stopCardioTimer':'startCardioTimer'}('${sessId+'_'+ex.id}')">${running?'Stop':'Start'}</button>
+        <label>Timer</label>
+        <span class="cardio-elapsed" id="ctelapsed_${id}">${fmt(elapsed)}</span>
+        <button class="cardio-timer-btn" id="ctbtn_${id}" onclick="${isRunning?'stopCardioTimer':'startCardioTimer'}('${id}')">${isRunning?'Stop':'Start'}</button>
+      </div>
+      <div class="cardio-row">
+        <label>Or enter min</label>
+        <input class="cardio-input" type="number" inputmode="decimal" placeholder="e.g. 25" value="${manualMin}"
+          oninput="updateCardioManual('${id}',this.value)" style="width:90px"/>
+        <span style="font-size:11px;color:var(--text3)">min</span>
       </div>
       <div class="cardio-row">
         <label>Notes</label>
         <input class="cardio-input" style="width:180px" type="text" placeholder="e.g. level 8, incline 12" value="${cs.notes||''}"
-          onchange="updateCardioField('${sessId}','${ex.id}','notes',this.value)"
-          oninput="updateCardioField('${sessId}','${ex.id}','notes',this.value)"/>
+          oninput="updateCardioNote('${id}',this.value)"/>
       </div>
     </div>`;
   }).join('');
 
-  const customCards=(cardioState[sessId+'_custom']||[]).map((c,i)=>`
+  const custom=(cardioState[sessId+'_custom']||[]).map((c,i)=>`
     <div class="cardio-card">
-      <div class="cardio-name">✏️ ${c.name}</div>
-      <div class="cardio-row">
-        <label>Duration</label>
-        <span class="cardio-elapsed">${fmt(c.elapsed||0)}</span>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="cardio-name">✏️ ${c.name}</div>
+        <button class="del-set" onclick="removeCustomCardio('${sessId}',${i})" style="color:var(--brand)">✕</button>
       </div>
-      <button class="del-set" style="margin:0;font-size:12px;color:var(--brand)" onclick="removeCustomCardio('${sessId}',${i})">Remove</button>
+      <div class="cardio-row"><label>Duration</label><span class="cardio-elapsed">${fmt(c.elapsed||0)}</span></div>
     </div>`).join('');
 
   mc.innerHTML=`
     <div class="cardio-tip">
       <div class="cardio-tip-title">Cardio Goal</div>
-      <div class="cardio-tip-body">2–3 sessions/week · 20–30 min each · Steps goal: 8,000–10,000/day</div>
+      <div class="cardio-tip-body">2–3 sessions/week · 20–30 min each · Steps: 8,000–10,000/day</div>
     </div>
     <div class="section-lbl">Today's Cardio</div>
-    ${cards}${customCards}
+    ${cards}${custom}
     <div class="custom-cardio-form">
-      <input id="customCardioName" type="text" placeholder="Custom exercise name (e.g. Jump Rope)"/>
-      <button class="add-custom-btn" onclick="addCustomCardio('${sessId}')">+ Add Custom Exercise</button>
+      <input id="customCardioName" type="text" placeholder="Custom exercise (e.g. Jump Rope)"/>
+      <button class="add-custom-btn" onclick="addCustomCardio('${sessId}')">+ Add Custom</button>
     </div>
     <div class="complete-section">
-      <div class="complete-title">Log Cardio Session</div>
-      <button class="complete-btn" onclick="completeCardio()">Submit Cardio to Google Sheets ✓</button>
+      <div class="complete-title">Submit to Workout Log</div>
+      <button class="complete-btn" onclick="completeCardio('${sessId}')">Submit Cardio to Workout Log ✓</button>
     </div>`;
 }
 
-function updateCardioField(sessId,exId,field,val){
-  const k=sessId+'_'+exId;
-  if(!cardioState[k])cardioState[k]={};
-  cardioState[k][field]=val;
-  saveState();
-}
-function addCustomCardio(sessId){
-  const name=document.getElementById('customCardioName').value.trim();
-  if(!name)return;
-  if(!cardioState[sessId+'_custom'])cardioState[sessId+'_custom']=[];
-  cardioState[sessId+'_custom'].push({name,elapsed:0});
-  saveState();renderSession();
-}
-function removeCustomCardio(sessId,i){
-  cardioState[sessId+'_custom'].splice(i,1);
-  saveState();renderSession();
-}
-
-// ---- photo ----
-function handlePhoto(input){
-  const file=input.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    photoBase64=e.target.result;
-    document.getElementById('photoArea').textContent='📸 Photo ready — tap to change';
-    document.getElementById('photoPreview').src=photoBase64;
-    document.getElementById('photoPreview').style.display='block';
-  };
-  reader.readAsDataURL(file);
-}
-
-// ---- complete workout ----
+// ── SUBMIT ────────────────────────────────────────────────────
 async function completeWorkout(){
   const url=getSheetUrl();
+  if(!url){toast('Connect Google Sheets first (⚙️)','err');return;}
   const sess=SESSIONS[cur];
   const w=WK[sess.full];if(!w)return;
   const week=parseInt(document.getElementById('weekSel').value);
@@ -664,37 +748,66 @@ async function completeWorkout(){
   const dateStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
   const timeStr=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
   const vol=calcVolume();
+
+  // ONLY include completed sets with weight entered
   const rows=[];
   w.exercises.forEach(ex=>{
-    const sets=getSessState(sess.id,ex.id);
-    sets.forEach((r,i)=>{
-      rows.push({date:dateStr,time:timeStr,phase:'Phase 1',week:'Week '+week,session:sess.id,exercise:ex.name,set:i+1,weight:r.weight||0,reps:r.reps||0,done:r.done});
+    (state[sess.id]?.[ex.id]||[]).forEach((r,i)=>{
+      if(r.done&&r.weight!==''&&r.weight!==null){
+        rows.push({date:dateStr,time:timeStr,phase:'Phase 1',week:'Week '+week,session:sess.label,exercise:ex.name,set:i+1,weight:parseFloat(r.weight)||0,reps:parseFloat(r.reps)||0});
+      }
     });
   });
-  const payload={type:'workout',rows,volume:vol,photo:photoBase64||null,date:dateStr,time:timeStr,week:'Week '+week,session:sess.label};
-  if(!url){toast('Connect Google Sheets first (⚙️ button)','err');return;}
-  toast('Submitting...','');
+
+  if(!rows.length){toast('No completed sets to submit','err');return;}
+
+  // Step 1: upload photo separately first (if any) to get a Drive URL
+  let photoUrl=null;
+  if(photoBase64){
+    toast('Uploading photo...','');
+    try{
+      const label=dateStr.replace(/,/g,'').replace(/ /g,'_')+'_'+sess.label;
+      const resp=await fetch(url,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({type:'photo',photo:photoBase64,label})
+      });
+      const result=await resp.json();
+      if(result.url)photoUrl=result.url;
+    }catch(e){
+      // photo upload failed, continue without it
+      toast('Photo upload failed — submitting without photo','err');
+    }
+  }
+
+  // Step 2: submit workout data with resolved photo URL
+  const payload={type:'workout',rows,volume:vol,photoUrl,date:dateStr,time:timeStr,week:'Week '+week,session:sess.label};
+  toast('Submitting workout...','');
   try{
     await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    toast('Submitted to Google Sheets ✓','ok');
+    toast('Submitted to Workout Log ✓','ok');
     photoBase64=null;
-  }catch(e){toast('Error submitting — check your URL','err');}
+  }catch(e){toast('Error — check your URL','err');}
 }
 
-async function completeCardio(){
+async function completeCardio(sessId){
   const url=getSheetUrl();
+  if(!url){toast('Connect Google Sheets first','err');return;}
   const week=parseInt(document.getElementById('weekSel').value);
-  const sessId='cardio_w'+week;
   const now=new Date();
   const dateStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
   const timeStr=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
   const rows=CARDIO_EXERCISES.map(ex=>{
     const k=sessId+'_'+ex.id;const cs=cardioState[k]||{};
-    return{exercise:ex.name,elapsed:cs.elapsed||0,notes:cs.notes||''};
-  }).filter(r=>r.elapsed>0);
-  const custom=(cardioState[sessId+'_custom']||[]).map(c=>({exercise:c.name,elapsed:c.elapsed||0,notes:'custom'}));
-  const payload={type:'cardio',rows:[...rows,...custom],date:dateStr,time:timeStr,week:'Week '+week};
-  if(!url){toast('Connect Google Sheets first','err');return;}
+    const hasTimer=(cs.elapsed||0)>0;
+    const hasManual=cs.manualMinutes&&parseFloat(cs.manualMinutes)>0;
+    if(!hasTimer&&!hasManual)return null;
+    return{exercise:ex.name,elapsed:cs.elapsed||0,minutes:cs.manualMinutes||null,notes:cs.notes||''};
+  }).filter(Boolean);
+  const custom=(cardioState[sessId+'_custom']||[]).filter(c=>(c.elapsed||0)>0||(c.manualMinutes&&parseFloat(c.manualMinutes)>0));
+  const allRows=[...rows,...custom.map(c=>({exercise:c.name,elapsed:c.elapsed||0,minutes:c.manualMinutes||null,notes:'custom'}))];
+  if(!allRows.length){toast('No cardio time logged yet','err');return;}
+  const payload={type:'cardio',rows:allRows,date:dateStr,time:timeStr,week:'Week '+week};
   toast('Submitting...','');
   try{
     await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
@@ -702,14 +815,14 @@ async function completeCardio(){
   }catch(e){toast('Error submitting','err');}
 }
 
-// ---- setup banner ----
+// ── SETUP BANNER ──────────────────────────────────────────────
 function renderSetupBanner(){
   const url=getSheetUrl();
   document.getElementById('setupBanner').innerHTML=url?'':
-    `<div class="setup-banner"><div class="setup-banner-text">Connect Google Sheets to save across all devices.</div><button class="setup-banner-btn" onclick="openSetup()">Set Up</button></div>`;
+    `<div class="setup-banner"><div class="setup-banner-text">Connect Google Sheets to save data across all devices.</div><button class="setup-banner-btn" onclick="openSetup()">Set Up</button></div>`;
 }
 
-// ---- modals ----
+// ── MODALS ────────────────────────────────────────────────────
 function openSetup(){
   const url=getSheetUrl();
   if(url)document.getElementById('sheetUrlInput').value=url;
@@ -718,15 +831,15 @@ function openSetup(){
 function closeModal(id){document.getElementById(id).style.display='none';}
 function closeModalOutside(e,id){if(e.target.id===id)closeModal(id);}
 
-// ---- toast ----
+// ── TOAST ─────────────────────────────────────────────────────
 let tTO=null;
 function toast(msg,type){
   const el=document.getElementById('toast');el.textContent=msg;
   el.className='toast'+(type?' '+type:'');el.classList.add('show');
-  clearTimeout(tTO);tTO=setTimeout(()=>el.classList.remove('show'),3000);
+  clearTimeout(tTO);tTO=setTimeout(()=>el.classList.remove('show'),3200);
 }
 
-// ---- init ----
+// ── INIT ──────────────────────────────────────────────────────
 loadState();
 renderSetupBanner();
 renderPresets();
