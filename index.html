@@ -1443,13 +1443,16 @@ function renderSession(){
 
   const w=WK[sess.full];if(!w){mc.innerHTML='';return;}
 
+  // Initialize the prefilled sets BEFORE calculating progress.
+  // Otherwise the page can show 0 of 0 sets even though exercises exist.
+  w.exercises.forEach(ex=>initSets(sess.id,ex));
   updateProgress();
 
 
 
   const cards=w.exercises.map(ex=>{
 
-    const rows=initSets(sess.id,ex);
+    const rows=state[sess.id][ex.id];
 
     const allDone=rows.length>0&&rows.every(r=>r.done);
 
