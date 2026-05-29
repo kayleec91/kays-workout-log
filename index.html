@@ -26,21 +26,21 @@ html,body{height:100%;background:#0f0f0f;font-family:-apple-system,BlinkMacSyste
 
 :root{
 
-  --bg:#0f0f0f;--surface:#1a1a1a;--surface2:#232323;--surface3:#2a2a2a;
+  --bg:#040306;--surface:#0e0d12;--surface2:#15131d;--surface3:#211d2b;
 
-  --border:#333;--border2:#2a2a2a;
+  --border:#3a3844;--border2:#2b2a35;
 
-  --text:#f0ece4;--text2:#a09890;--text3:#6a6460;
+  --text:#ffffff;--text2:#d6d2dc;--text3:#9d98a8;
 
-  --brand:#c0392b;--brand-soft:#2a1512;--brand-border:#4a1f1c;
+  --brand:#6d28d9;--brand-soft:#160726;--brand-border:#3b1a66;
 
-  --gold:#d4a843;--gold-soft:#1e1a0f;--gold-border:#3a2e0f;
+  --gold:#c9c9d1;--gold-soft:#1a1a22;--gold-border:#4a4854;
 
-  --green:#27ae60;--green-soft:#0f1e12;--green-border:#1a3d1f;
+  --green:#35d07f;--green-soft:#0d2418;--green-border:#1e6840;
 
-  --blue:#2980b9;--blue-soft:#0f1a2a;--blue-border:#1a3d5c;
+  --blue:#8b5cf6;--blue-soft:#160726;--blue-border:#5b21b6;
 
-  --purple:#8e44ad;--purple-soft:#1a0f22;
+  --purple:#6d28d9;--purple-soft:#160726;
 
   --radius:14px;--radius-sm:9px;--radius-pill:999px;
 
@@ -338,6 +338,20 @@ select{font-size:12px;padding:5px 10px;border:.5px solid var(--border);border-ra
 
 .fab-row{position:fixed;bottom:24px;right:14px;display:flex;flex-direction:column;gap:7px;z-index:50}
 
+.library-screen{padding:4px 0}
+.library-card{background:var(--surface);border:.5px solid var(--border);border-radius:var(--radius);padding:13px;margin-bottom:10px}
+.library-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.library-muscles{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:8px}
+.library-alt{font-size:11px;color:var(--text3);line-height:1.5}
+.alt-chip{display:inline-block;margin:3px 4px 0 0;padding:3px 8px;border:.5px solid var(--border);border-radius:var(--radius-pill);background:var(--surface2);color:var(--text2);font-size:11px}
+.custom-workout-form{background:var(--surface);border:.5px dashed var(--border);border-radius:var(--radius);padding:13px;margin:14px 0}
+.custom-workout-form input{width:100%;padding:9px 12px;font-size:13px;border:.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);outline:none;margin-bottom:8px}
+.custom-workout-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.add-custom-workout-btn{width:100%;padding:10px;font-size:13px;font-weight:700;border-radius:var(--radius-pill);border:none;background:var(--brand);color:#fff;cursor:pointer;margin-top:8px}
+.ex-actions{display:flex;gap:6px;align-items:center}
+.exercise-thumb{width:54px;height:54px;border-radius:12px;background:var(--surface2);object-fit:cover;border:.5px solid var(--border);flex-shrink:0}
+.info-note{font-size:12px;color:var(--text3);line-height:1.5;background:var(--surface2);border-radius:var(--radius-sm);padding:10px;margin-bottom:12px}
+
 .fab{background:var(--surface);border:.5px solid var(--border);border-radius:var(--radius-pill);padding:9px 15px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;box-shadow:0 4px 20px rgba(0,0,0,.5);white-space:nowrap}
 
 </style>
@@ -381,6 +395,8 @@ select{font-size:12px;padding:5px 10px;border:.5px solid var(--border);border-ra
     <button class="nav-tab active" id="navWorkout" onclick="switchNav('workout')">Workout</button>
 
     <button class="nav-tab prog-tab" id="navProgress" onclick="switchNav('progress')">📈 Progress</button>
+
+    <button class="nav-tab" id="navLibrary" onclick="switchNav('library')">Library</button>
 
   </div>
 
@@ -433,6 +449,14 @@ select{font-size:12px;padding:5px 10px;border:.5px solid var(--border);border-ra
       <div class="prog-loading">Loading your progress from Sheets...</div>
 
     </div>
+
+  </div>
+
+  <!-- Exercise library view -->
+
+  <div id="libraryView" style="display:none">
+
+    <div class="library-screen" id="libraryContent"></div>
 
   </div>
 
@@ -552,7 +576,7 @@ select{font-size:12px;padding:5px 10px;border:.5px solid var(--border);border-ra
 
 // ════════════════════════════════════════════════════════════
 
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwA_lBAb2AiXiYludC2CxOMkU9z2tLJO9lbxTeaBz7YxrYr7aeU8X7EklJyjlGhjQQ7YA/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwd7DQ3pSnTC6RjZ0JVFH2konq-9RjCQc33CBSHwrzCuJH_ZdPY5jvF0xNcxYYmSTt0/exec';
 
 
 
@@ -626,6 +650,44 @@ const EX_INFO = {
 
 };
 
+
+const DEFAULT_ALT = ['Similar machine at your gym', 'Cable version', 'Dumbbell version', 'Bodyweight version'];
+const EX_ALTS = {
+  'Hack Squat Machine':['Leg Press','V-Squat Machine','Smith Machine Squat','Goblet Squat','Belt Squat'],
+  'Dumbbell RDL':['Barbell RDL','Smith Machine RDL','Cable Pull Through','45° Back Extension','Seated Leg Curl'],
+  'DB Bulgarian Split Squat':['Single-Leg Leg Press','Reverse Lunge','Step-Up','Smith Split Squat','Leg Press'],
+  'Lying Leg Curl':['Seated Leg Curl','Standing Leg Curl','Stability Ball Leg Curl','Cable Hamstring Curl'],
+  'Moving Plank':['Forearm Plank','High Plank Shoulder Tap','Dead Bug','Pallof Press'],
+  'Machine Shoulder Press':['Smith Machine Shoulder Press','Dumbbell Shoulder Press','Landmine Press','Cable Shoulder Press'],
+  'Pull Ups – Supinated':['Supinated Lat Pulldown','Assisted Pull-Up Machine','Neutral Grip Pulldown','Seated Cable Row'],
+  'Machine Chest Press – Neutral':['Incline Machine Chest Press','Cable Chest Press','Smith Machine Bench','Pec Deck'],
+  'One Arm DB Rows – Dead Stop':['Chest Supported Row','One Arm Cable Row','Seated Cable Row','Machine Row'],
+  'BB Curls':['Cable Curl','Machine Preacher Curl','Dumbbell Curl','EZ-Bar Curl'],
+  'Machine Tricep Extension':['Cable Pushdown','Rope Overhead Extension','Assisted Dip Machine','Single Arm Cable Extension'],
+  'Rope Crunches':['Machine Crunch','Cable Crunch','Decline Crunch','Dead Bug'],
+  'BB Romanian Deadlifts':['Dumbbell RDL','Smith Machine RDL','Cable Pull Through','45° Back Extension'],
+  'DB Front Foot Elevated Split Squat':['Leg Press','Single-Leg Leg Press','Smith Split Squat','Step-Up'],
+  'Leg Press – Feet Middle':['Hack Squat','V-Squat','Smith Machine Squat','Leg Extension'],
+  'BB Hip Thrusts':['Smith Machine Hip Thrust','Glute Bridge Machine','Kas Glute Bridge','Cable Pull Through'],
+  'Glute Medius Kickbacks – Cable':['Cable Hip Abduction','Abduction Machine','Banded Kickbacks','Standing Banded Abductions'],
+  'Incline Machine Chest Press – Neutral':['Machine Chest Press','Cable Incline Press','Smith Incline Press','Pec Deck'],
+  'Lat Pulldown – Mid Pronated':['Assisted Pull-Up','Neutral Grip Pulldown','Single Arm Pulldown','Machine High Row'],
+  'Standing DB Lateral Raises':['Cable Lateral Raise','Machine Lateral Raise','Lean-Away Lateral Raise'],
+  'Seated Row – Neutral':['Machine Row','Chest Supported Row','One Arm Cable Row','Lat Pulldown'],
+  'Rope Face Pull':['Reverse Pec Deck','Cable Rear Delt Fly','Band Face Pull','Machine Rear Delt'],
+  'Cable Bicep Curls':['Machine Curl','DB Curl','EZ-Bar Curl','Preacher Curl'],
+  'Rope Tricep Pushdowns':['Machine Tricep Extension','Straight Bar Pushdown','Single Arm Pushdown','Overhead Rope Extension'],
+  'Lying Leg Raises':['Captain Chair Leg Raise','Reverse Crunch','Hanging Knee Raise','Dead Bug'],
+  'Kas Glute Bridge':['Hip Thrust Machine','Smith Machine Hip Thrust','Glute Bridge Machine','Cable Pull Through'],
+  'Leg Press – Feet High and Wide':['Hack Squat High Foot','Sumo Leg Press','Smith Squat Wide Stance','Glute Bridge Machine'],
+  '45° Back Extension – DB Behind Head':['Reverse Hyper','Cable Pull Through','Dumbbell RDL','Hip Thrust'],
+  'Leg Extensions':['Single Leg Extension','Sissy Squat Machine','Goblet Squat','Leg Press Narrow'],
+  'Seated Leg Curls':['Lying Leg Curl','Standing Leg Curl','Cable Hamstring Curl','Nordic Curl Assisted'],
+  'Standing Straight Leg Abductions – Banded':['Hip Abduction Machine','Cable Hip Abduction','Side-Lying Abduction','Banded Lateral Walk'],
+  'Banded Kickbacks':['Cable Kickback','Glute Kickback Machine','Hip Extension Machine','Quadruped Kickback']
+};
+
+function exAlts(name){return EX_ALTS[name] || DEFAULT_ALT;}
 
 
 const SESSIONS=[
@@ -967,11 +1029,17 @@ function switchNav(nav){
 
   document.getElementById('navProgress').className='nav-tab prog-tab'+(nav==='progress'?' active':'');
 
+  document.getElementById('navLibrary').className='nav-tab'+(nav==='library'?' active':'');
+
   document.getElementById('workoutView').style.display=nav==='workout'?'':'none';
 
   document.getElementById('progressView').style.display=nav==='progress'?'':'none';
 
+  document.getElementById('libraryView').style.display=nav==='library'?'':'none';
+
   if(nav==='progress')renderProgressView();
+
+  if(nav==='library')renderLibraryView();
 
 }
 
@@ -1051,6 +1119,41 @@ function renderProgressView(){
 
 
 
+
+
+function renderLibraryView(){
+
+  const lc=document.getElementById('libraryContent');
+
+  const names=[...new Set(Object.values(WK).flatMap(w=>w.exercises.map(e=>e.name)))].sort();
+
+  lc.innerHTML=`<div class="section-lbl">Exercise Library · pictures, cues, swaps</div>`+names.map(name=>{
+
+    const info=EX_INFO[name]||{};
+
+    const img=info.img?`<img class="exercise-thumb" src="${info.img}" alt="${name}" onerror="this.style.display='none'"/>`:'';
+
+    const alts=exAlts(name).map(a=>`<span class="alt-chip">${a}</span>`).join('');
+
+    return `<div class="library-card" onclick="openExInfo('${name.replace(/'/g,"\\'")}')">
+
+      <div style="display:flex;gap:10px;align-items:flex-start">${img}<div style="flex:1;min-width:0">
+
+        <div class="library-name">${name}</div>
+
+        <div class="library-muscles">${info.muscles||'Muscles/cues available in the workout card.'}</div>
+
+        <div class="library-alt"><strong>Alternatives:</strong><br>${alts}</div>
+
+      </div></div>
+
+    </div>`;
+
+  }).join('');
+
+}
+
+
 // ── PROGRESS BAR ──────────────────────────────────────────────
 
 function calcProg(){
@@ -1061,7 +1164,7 @@ function calcProg(){
 
   let tot=0,done=0;
 
-  w.exercises.forEach(ex=>{(state[sess.id]?.[ex.id]||[]).forEach(r=>{tot++;if(r.done)done++;});});
+  getSessionExercises(sess).forEach(ex=>{(state[sess.id]?.[ex.id]||[]).forEach(r=>{tot++;if(r.done)done++;});});
 
   return[done,tot];
 
@@ -1089,7 +1192,7 @@ function calcVolume(){
 
   const w=WK[sess.full];if(!w)return 0;
 
-  w.exercises.forEach(ex=>{
+  getSessionExercises(sess).forEach(ex=>{
 
     (state[sess.id]?.[ex.id]||[]).forEach(r=>{
 
@@ -1163,7 +1266,11 @@ function openExInfo(name){
 
     <div class="info-section"><div class="info-label">Form Cues</div><div class="info-body"><ul>${(info.cues||[]).map(c=>`<li>${c}</li>`).join('')}</ul></div></div>
 
-    <div class="info-section"><div class="info-label">Common Mistakes</div><div class="info-body"><ul>${(info.mistakes||[]).map(m=>`<li>${m}</li>`).join('')}</ul></div></div>`;
+    <div class="info-section"><div class="info-label">Common Mistakes</div><div class="info-body"><ul>${(info.mistakes||[]).map(m=>`<li>${m}</li>`).join('')}</ul></div></div>
+
+    <div class="info-section"><div class="info-label">Alternatives if machine is busy</div><div class="info-body">${exAlts(name).map(a=>`<span class="alt-chip">${a}</span>`).join('')}</div></div>
+
+    <div class="info-note">Quick rule: choose an alternative that trains the same main muscle and lets you keep similar reps. Do not force a machine if it feels awkward or unsafe.</div>`;
 
 
 
@@ -1223,6 +1330,59 @@ function openExInfo(name){
 
 }
 
+
+
+
+
+function getSessionExercises(sess){
+
+  const w=WK[sess.full];
+
+  if(!w)return [];
+
+  const custom=(state[sess.id]&&state[sess.id]._custom)||[];
+
+  return [...w.exercises,...custom];
+
+}
+
+function addCustomWorkoutExercise(sessId){
+
+  const name=(document.getElementById('customWorkoutName')?.value||'').trim();
+
+  const sets=parseInt(document.getElementById('customWorkoutSets')?.value||'3')||3;
+
+  const reps=(document.getElementById('customWorkoutReps')?.value||'10').trim()||'10';
+
+  const rest=parseInt(document.getElementById('customWorkoutRest')?.value||'90')||90;
+
+  if(!name){toast('Add an exercise name','err');return;}
+
+  if(!state[sessId])state[sessId]={};
+
+  if(!state[sessId]._custom)state[sessId]._custom=[];
+
+  const ex={id:'X'+Date.now(),name,sets,reps,rest,tempo:'custom',timeBased:false,custom:true,note:'Custom add-on for this workout.'};
+
+  state[sessId]._custom.push(ex);
+
+  initSets(sessId,ex);
+
+  saveState();renderSession();
+
+}
+
+function removeCustomWorkoutExercise(sessId,exId){
+
+  if(!state[sessId]||!state[sessId]._custom)return;
+
+  state[sessId]._custom=state[sessId]._custom.filter(e=>e.id!==exId);
+
+  delete state[sessId][exId];
+
+  saveState();renderSession();
+
+}
 
 
 // ── SETS ──────────────────────────────────────────────────────
@@ -1445,12 +1605,14 @@ function renderSession(){
 
   // Initialize the prefilled sets BEFORE calculating progress.
   // Otherwise the page can show 0 of 0 sets even though exercises exist.
-  w.exercises.forEach(ex=>initSets(sess.id,ex));
+  getSessionExercises(sess).forEach(ex=>initSets(sess.id,ex));
   updateProgress();
 
 
 
-  const cards=w.exercises.map(ex=>{
+  const exercises=getSessionExercises(sess);
+
+  const cards=exercises.map(ex=>{
 
     const rows=state[sess.id][ex.id];
 
@@ -1558,6 +1720,8 @@ function renderSession(){
 
       <button class="add-set-btn" onclick="addSet('${sess.id}','${ex.id}')">+ Add Set</button>
 
+      ${ex.custom?`<button class="add-set-btn" style="border-color:var(--brand);color:var(--brand)" onclick="removeCustomWorkoutExercise('${sess.id}','${ex.id}')">Remove Custom Exercise</button>`:''}
+
     </div>`;
 
   }).join('');
@@ -1567,6 +1731,26 @@ function renderSession(){
   const vol=calcVolume();
 
   mc.innerHTML=`<div class="section-lbl">${w.tag}</div>${cards}
+
+    <div class="custom-workout-form">
+
+      <div class="section-lbl" style="margin-bottom:8px">Add an extra exercise</div>
+
+      <input id="customWorkoutName" type="text" placeholder="Exercise name, like Abduction Machine"/>
+
+      <div class="custom-workout-grid">
+
+        <input id="customWorkoutSets" type="number" inputmode="numeric" placeholder="Sets" value="3"/>
+
+        <input id="customWorkoutReps" type="text" placeholder="Reps" value="10"/>
+
+        <input id="customWorkoutRest" type="number" inputmode="numeric" placeholder="Rest sec" value="90"/>
+
+      </div>
+
+      <button class="add-custom-workout-btn" onclick="addCustomWorkoutExercise('${sess.id}')">+ Add to this workout</button>
+
+    </div>
 
     <div class="complete-section">
 
@@ -1766,7 +1950,7 @@ async function completeWorkout(){
 
   const rows=[];
 
-  w.exercises.forEach(ex=>{
+  getSessionExercises(sess).forEach(ex=>{
 
     (state[sess.id]?.[ex.id]||[]).forEach((r,i)=>{
 
