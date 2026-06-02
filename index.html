@@ -917,15 +917,47 @@ function getPrevBest(exName){return globalBests[exName]||null;}
 
 // ── STATE ─────────────────────────────────────────────────────
 
-function initSets(sessId,ex){
+function initSets(sessId, ex){
 
   if(!state[sessId])state[sessId]={};
 
   if(!state[sessId][ex.id]){
 
-    state[sessId][ex.id]=Array.from({length:ex.sets},()=>({weight:'',reps:'',done:false}));
+    state[sessId][ex.id]=Array.from({length:ex.sets},()=>({
+      weight:'',
+      reps:'',
+      done:false,
+      lastWeight:'',
+      lastReps:'',
+      hidden:false,
+      added:false
+    }));
 
   }
+
+  while(state[sessId][ex.id].length < ex.sets){
+
+    state[sessId][ex.id].push({
+      weight:'',
+      reps:'',
+      done:false,
+      lastWeight:'',
+      lastReps:'',
+      hidden:false,
+      added:false
+    });
+
+  }
+
+  state[sessId][ex.id]=state[sessId][ex.id].map(row=>({
+    weight:row.weight===undefined?'':row.weight,
+    reps:row.reps===undefined?'':row.reps,
+    done:row.done===undefined?false:row.done,
+    lastWeight:row.lastWeight===undefined?'':row.lastWeight,
+    lastReps:row.lastReps===undefined?'':row.lastReps,
+    hidden:row.hidden===undefined?false:row.hidden,
+    added:row.added===undefined?false:row.added
+  }));
 
   return state[sessId][ex.id];
 
@@ -1228,7 +1260,13 @@ function calcProg(){
 
   let tot=0,done=0;
 
-  getSessionExercises(sess).forEach(ex=>{(state[sess.id]?.[ex.id]||[]).forEach(r=>{tot++;if(r.done)done++;});});
+  getSessionExercises(sess).forEach(ex=>{
+    (state[sess.id]?.[ex.id]||[]).forEach(r=>{
+      if(r.hidden)return;
+      tot++;
+      if(r.done)done++;
+    });
+  });
 
   return[done,tot];
 
@@ -1257,6 +1295,8 @@ function calcVolume(){
   getSessionExercises(sess).forEach(ex=>{
 
     (state[sess.id]?.[ex.id]||[]).forEach(r=>{
+
+      if(r.hidden)return;
 
       const reps=parseFloat(r.reps);
 
@@ -1316,146 +1356,75 @@ function switchModalTab(tab){
 
 function openExInfo(name){
 
-  const info=EX_INFO[name]||{};
+  const info=EX_INFO[name]||{muscles:'Information not added yet.',cues:['Use controlled reps','Keep good form'],mistakes:['Rushing reps']};
 
   document.getElementById('exModalTitle').textContent=name;
 
-  switchModalTab('info');
-
-  const imgHtml=info.img
-
-    ?`<div class="ex-illus-wrap"><img class="ex-illus" src="${info.img}" alt="${name}" onerror="this.parentElement.style.display='none'"/></div>`
-
-    :`<div class="ex-illus-wrap" style="font-size:48px">💪</div>`;
-
   document.getElementById('exModalInfo').innerHTML=`
 
-    ${imgHtml}
+    <div class="ex-illus-wrap">${info.img?`<img class="ex-illus" src="${info.img}" onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--text3);font-size:13px&quot;>Image unavailable</div>'"/>`:'<div style="color:var(--text3);font-size:13px">No image yet</div>'}</div>
 
-    <div class="info-section"><div class="info-label">Muscles Worked</div><div class="info-body">${info.muscles||''}</div></div>
+    <div class="info-note">Tap the exercise name anytime to review cues, history, and alternatives.</div>
 
-    <div class="info-section"><div class="info-label">Form Cues</div><div class="info-body"><ul>${(info.cues||[]).map(c=>`<li>${c}</li>`).join('')}</ul></div></div>
+    <div class="info-section"><div class="info-label">Muscles worked</div><div class="info-body">${info.muscles}</div></div>
 
-    <div class="info-section"><div class="info-label">Common Mistakes</div><div class="info-body"><ul>${(info.mistakes||[]).map(m=>`<li>${m}</li>`).join('')}</ul></div></div>
+    <div class="info-section"><div class="info-label">Form cues</div><div class="info-body"><ul>${(info.cues||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
 
-    <div class="info-section"><div class="info-label">Alternatives if machine is busy</div><div class="info-body">${exAlts(name).map(a=>`<span class="alt-chip">${a}</span>`).join('')}</div></div>
+    <div class="info-section"><div class="info-label">Avoid</div><div class="info-body"><ul>${(info.mistakes||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
 
-    <div class="info-note">Quick rule: choose an alternative that trains the same main muscle and lets you keep similar reps. Do not force a machine if it feels awkward or unsafe.</div>`;
+    <div class="info-section"><div class="info-label">Alternatives</div><div class="info-body">${exAlts(name).map(a=>`<span class="alt-chip">${a}</span>`).join('')}</div></div>
 
+  `;
 
+  renderExHistory(name);
 
-  // History: from progression data (cross-device)
-
-  const progData=globalProg[name]||[];
-
-  const hist=ls('exhist_'+name)||[];
-
-  const el=document.getElementById('exModalHist');
-
-  let html='';
-
-  if(progData.length){
-
-    html+=`<div class="info-label" style="margin-bottom:10px">Progress from Sheets</div>`;
-
-    html+=progData.map(p=>`
-
-      <div class="hist-row">
-
-        <div><div class="hist-wk">${p.week}</div><div class="hist-det">${p.date}</div></div>
-
-        <div style="text-align:right">
-
-          <div class="hist-wk">${p.weight>0?p.weight+' lbs':''} ${p.reps>0?'× '+p.reps+(p.weight>0?' reps':' sec'):''}</div>
-
-          <div class="hist-vol">${p.vol>0?p.vol+' lbs vol':''}</div>
-
-        </div>
-
-      </div>`).join('');
-
-  }
-
-  if(hist.length){
-
-    html+=`<div class="info-label" style="margin:14px 0 10px">Recent (this device)</div>`;
-
-    html+=hist.slice(0,10).map(h=>`
-
-      <div class="hist-row">
-
-        <div><div class="hist-wk">${h.week} · ${h.session}</div><div class="hist-det">${h.date}</div></div>
-
-        <div style="text-align:right"><div class="hist-wk">${h.weight} × ${h.reps}</div></div>
-
-      </div>`).join('');
-
-  }
-
-  if(!progData.length&&!hist.length){html=`<div class="empty-hist">No history yet.<br>Complete sets and submit to see data here.</div>`;}
-
-  el.innerHTML=html;
+  switchModalTab('info');
 
   document.getElementById('exModal').style.display='flex';
 
 }
 
+function renderExHistory(name){
 
+  const hist=ls('exhist_'+name)||[];
 
+  const remote=globalProg[name]||[];
 
+  let html='';
 
-function getSessionExercises(sess){
+  if(remote.length){
 
-  const w=WK[sess.full];
+    html+=`<div class="info-label">From Google Sheets</div>`;
 
-  if(!w)return [];
+    remote.slice(-8).reverse().forEach(p=>{
 
-  const custom=(state[sess.id]&&state[sess.id]._custom)||[];
+      html+=`<div class="hist-row"><div><div class="hist-wk">${p.week}</div><div class="hist-vol">${p.date||''}</div></div><div class="hist-det">${p.weight>0?p.weight+' lbs × ':''}${p.reps}</div></div>`;
 
-  return [...w.exercises,...custom];
+    });
 
-}
+  }
 
-function addCustomWorkoutExercise(sessId){
+  if(hist.length){
 
-  const name=(document.getElementById('customWorkoutName')?.value||'').trim();
+    html+=`<div class="info-label" style="margin-top:14px">This Device</div>`;
 
-  const sets=parseInt(document.getElementById('customWorkoutSets')?.value||'3')||3;
+    hist.slice(0,10).forEach(h=>{
 
-  const reps=(document.getElementById('customWorkoutReps')?.value||'10').trim()||'10';
+      html+=`<div class="hist-row"><div><div class="hist-wk">${h.week} · ${h.session}</div><div class="hist-vol">${h.date}</div></div><div class="hist-det">${h.weight>0?h.weight+' lbs × ':''}${h.reps}</div></div>`;
 
-  const rest=parseInt(document.getElementById('customWorkoutRest')?.value||'90')||90;
+    });
 
-  if(!name){toast('Add an exercise name','err');return;}
+  }
 
-  if(!state[sessId])state[sessId]={};
+  if(!html)html='<div class="empty-hist">No history yet.<br>Complete a set and it will show here.</div>';
 
-  if(!state[sessId]._custom)state[sessId]._custom=[];
-
-  const ex={id:'X'+Date.now(),name,sets,reps,rest,tempo:'custom',timeBased:false,custom:true,note:'Custom add-on for this workout.'};
-
-  state[sessId]._custom.push(ex);
-
-  initSets(sessId,ex);
-
-  saveState();renderSession();
-
-}
-
-function removeCustomWorkoutExercise(sessId,exId){
-
-  if(!state[sessId]||!state[sessId]._custom)return;
-
-  state[sessId]._custom=state[sessId]._custom.filter(e=>e.id!==exId);
-
-  delete state[sessId][exId];
-
-  saveState();renderSession();
+  document.getElementById('exModalHist').innerHTML=html;
 
 }
 
 
-// ── SETS ──────────────────────────────────────────────────────
+
+// ── ADD / REMOVE / UPDATE SETS ────────────────────────────────
 
 function addSet(sessId,exId){
 
@@ -1463,7 +1432,15 @@ function addSet(sessId,exId){
 
   if(!state[sessId][exId])state[sessId][exId]=[];
 
-  state[sessId][exId].push({weight:'',reps:'',done:false});
+  state[sessId][exId].push({
+    weight:'',
+    reps:'',
+    done:false,
+    lastWeight:'',
+    lastReps:'',
+    hidden:false,
+    added:true
+  });
 
   saveState();renderSession();
 
@@ -1471,9 +1448,36 @@ function addSet(sessId,exId){
 
 function removeSet(sessId,exId,idx){
 
+  const sess=SESSIONS[cur];
+
+  const ex=getSessionExercises(sess).find(item=>item.id===exId);
+
   const rows=state[sessId]?.[exId]||[];
 
-  if(rows.length>1)rows.splice(idx,1);
+  if(!rows[idx])return;
+
+  if(rows[idx].added){
+    rows.splice(idx,1);
+  }else{
+    rows[idx].weight='';
+    rows[idx].reps='';
+    rows[idx].done=false;
+    rows[idx].hidden=true;
+  }
+
+  if(ex && rows.length < ex.sets){
+    while(rows.length < ex.sets){
+      rows.push({
+        weight:'',
+        reps:'',
+        done:false,
+        lastWeight:'',
+        lastReps:'',
+        hidden:false,
+        added:false
+      });
+    }
+  }
 
   saveState();renderSession();
 
@@ -1485,15 +1489,21 @@ function updateField(sessId,exId,idx,field,val){
 
   if(!state[sessId][exId])return;
 
+  if(!state[sessId][exId][idx])return;
+
   state[sessId][exId][idx][field]=val;
 
-  // Auto fill remaining blank sets only.
+  state[sessId][exId][idx].hidden=false;
+
+  // Auto fill remaining blank visible sets only.
   // This does not overwrite anything you already typed.
   if(field==='weight'||field==='reps'){
 
     const rows=state[sessId][exId];
 
     for(let i=idx+1;i<rows.length;i++){
+
+      if(rows[i].hidden)continue;
 
       const currentValue=rows[i][field];
 
@@ -1509,9 +1519,98 @@ function updateField(sessId,exId,idx,field,val){
 
   }
 
+  saveState();renderSession();
+
+}
+
+function rememberAndClearWorkoutSession(sessId){
+
+  const sess=SESSIONS.find(s=>s.id===sessId)||SESSIONS[cur];
+
+  if(!sess||sess.type!=='workout')return;
+
+  const exercises=getSessionExercises(sess);
+
+  if(!state[sessId])state[sessId]={};
+
+  exercises.forEach(ex=>{
+
+    const existingRows=state[sessId]?.[ex.id]||[];
+
+    const freshRows=[];
+
+    for(let i=0;i<ex.sets;i++){
+
+      const old=existingRows[i]||{};
+
+      const lastWeight=
+        old.weight!==''&&old.weight!==null&&old.weight!==undefined
+          ? old.weight
+          : old.lastWeight||'';
+
+      const lastReps=
+        old.reps!==''&&old.reps!==null&&old.reps!==undefined
+          ? old.reps
+          : old.lastReps||'';
+
+      freshRows.push({
+        weight:'',
+        reps:'',
+        done:false,
+        lastWeight:lastWeight,
+        lastReps:lastReps,
+        hidden:false,
+        added:false
+      });
+
+    }
+
+    const addedRows=existingRows
+      .filter(r=>r.added&&!r.hidden)
+      .map(r=>({
+        weight:'',
+        reps:'',
+        done:false,
+        lastWeight:
+          r.weight!==''&&r.weight!==null&&r.weight!==undefined
+            ? r.weight
+            : r.lastWeight||'',
+        lastReps:
+          r.reps!==''&&r.reps!==null&&r.reps!==undefined
+            ? r.reps
+            : r.lastReps||'',
+        hidden:false,
+        added:true
+      }));
+
+    state[sessId][ex.id]=[...freshRows,...addedRows];
+
+  });
+
+  photoBase64=null;
+
   saveState();
 
+}
+
+function resetCurrentWorkout(){
+
+  const sess=SESSIONS[cur];
+
+  if(!sess||sess.type!=='workout'){
+    toast('Reset only works on workout days','err');
+    return;
+  }
+
+  rememberAndClearWorkoutSession(sess.id);
+
+  resetTimer();
+
+  updateProgress();
+
   renderSession();
+
+  toast('Workout reset. Last numbers kept as gray placeholders.','ok');
 
 }
 
@@ -1522,6 +1621,8 @@ function toggleSetDone(sessId,exId,idx,restSecs,exName,isTime){
   const rows=state[sessId][exId]||[];
 
   if(!rows[idx])return;
+
+  rows[idx].hidden=false;
 
   rows[idx].done=!rows[idx].done;
 
@@ -1537,19 +1638,106 @@ function toggleSetDone(sessId,exId,idx,restSecs,exName,isTime){
 
     const hist=ls('exhist_'+exName)||[];
 
-    const weightValue=r.weight===''||r.weight===null||r.weight===undefined?0:r.weight;
+    const weightValue=
+      r.weight===''||r.weight===null||r.weight===undefined
+        ? r.lastWeight||0
+        : r.weight;
 
-    const repsValue=r.reps===''||r.reps===null||r.reps===undefined?0:r.reps;
+    const repsValue=
+      r.reps===''||r.reps===null||r.reps===undefined
+        ? r.lastReps||0
+        : r.reps;
 
-    hist.unshift({weight:weightValue,reps:repsValue,week:wk,session:sl,
-
-      date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),ts:Date.now()});
+    hist.unshift({
+      weight:weightValue,
+      reps:repsValue,
+      week:wk,
+      session:sl,
+      date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+      ts:Date.now()
+    });
 
     ls('exhist_'+exName,hist.slice(0,50));
 
   }
 
-  saveState();updateProgress();renderSession();
+  saveState();
+
+  updateProgress();
+
+  renderSession();
+
+}
+
+// ── CUSTOM WORKOUT EXERCISES ──────────────────────────────────
+
+function getCustomWorkoutExercises(sessId){
+
+  return ls('customWorkout_'+sessId)||[];
+
+}
+
+function saveCustomWorkoutExercises(sessId,items){
+
+  ls('customWorkout_'+sessId,items);
+
+}
+
+function getSessionExercises(sess){
+
+  const base=WK[sess.full]?.exercises||[];
+
+  const custom=getCustomWorkoutExercises(sess.id);
+
+  return base.concat(custom);
+
+}
+
+function addCustomWorkoutExercise(sessId){
+
+  const name=(document.getElementById('customWorkoutName')?.value||'').trim();
+
+  const sets=parseInt(document.getElementById('customWorkoutSets')?.value||'3')||3;
+
+  const reps=(document.getElementById('customWorkoutReps')?.value||'10').trim();
+
+  const rest=parseInt(document.getElementById('customWorkoutRest')?.value||'90')||90;
+
+  if(!name){toast('Enter exercise name','err');return;}
+
+  const items=getCustomWorkoutExercises(sessId);
+
+  const id='X'+Date.now();
+
+  items.push({id,name,sets,reps,rest,tempo:'-',timeBased:false,note:'Custom exercise',custom:true});
+
+  saveCustomWorkoutExercises(sessId,items);
+
+  if(!state[sessId])state[sessId]={};
+
+  state[sessId][id]=Array.from({length:sets},()=>({weight:'',reps:'',done:false,lastWeight:'',lastReps:'',hidden:false,added:false}));
+
+  saveState();
+
+  renderSession();
+
+  toast('Exercise added','ok');
+
+}
+
+function removeCustomWorkoutExercise(sessId,exId){
+
+  const items=getCustomWorkoutExercises(sessId).filter(x=>x.id!==exId);
+
+  saveCustomWorkoutExercises(sessId,items);
+
+  if(state[sessId])delete state[sessId][exId];
+
+  saveState();
+
+  renderSession();
+
+  toast('Custom exercise removed','ok');
 
 }
 
@@ -1557,133 +1745,151 @@ function toggleSetDone(sessId,exId,idx,restSecs,exName,isTime){
 
 // ── CARDIO ────────────────────────────────────────────────────
 
-function startCardioTimer(id){
+function renderCardio(mc,sess){
 
-  if(cardioTimers[id])return;
+  if(!cardioState[sess.id])cardioState[sess.id]={};
 
-  const startAt=Date.now();
+  const items=[...CARDIO_EXERCISES,...(ls('customCardio')||[])];
 
-  const prev=cardioState[id]?.elapsed||0;
+  mc.innerHTML=`
 
-  const tick=setInterval(()=>{
+    <div class="cardio-tip"><div class="cardio-tip-title">Cardio Day</div><div class="cardio-tip-body">Track duration, distance, calories, and notes. Submit when done.</div></div>
 
-    const elapsed=prev+Math.floor((Date.now()-startAt)/1000);
+    ${items.map(c=>renderCardioCard(c)).join('')}
 
-    const el=document.getElementById('ctelapsed_'+id);
+    <div class="custom-cardio-form">
 
-    const btn=document.getElementById('ctbtn_'+id);
+      <input id="customCardioName" placeholder="Add custom cardio, like Pilates or Walk"/>
 
-    if(!el){clearInterval(tick);return;}
+      <button class="add-custom-btn" onclick="addCustomCardio()">+ Add Cardio</button>
 
-    el.textContent=fmt(elapsed);
+    </div>
 
-    if(btn)btn.textContent='Stop';
+    <div class="complete-section">
 
-  },1000);
+      <div class="complete-title">Submit Cardio</div>
 
-  cardioTimers[id]={startAt,prev,tick};
+      <button class="complete-btn" onclick="completeCardio()">Submit Cardio ✓</button>
 
-  renderSession();
-
-}
-
-function stopCardioTimer(id){
-
-  if(!cardioTimers[id])return;
-
-  const elapsed=cardioTimers[id].prev+Math.floor((Date.now()-cardioTimers[id].startAt)/1000);
-
-  clearInterval(cardioTimers[id].tick);
-
-  delete cardioTimers[id];
-
-  if(!cardioState[id])cardioState[id]={};
-
-  cardioState[id].elapsed=elapsed;
-
-  saveState();renderSession();
+    </div>`;
 
 }
 
-function updateCardioNote(id,val){if(!cardioState[id])cardioState[id]={};cardioState[id].notes=val;saveState();}
+function renderCardioCard(c){
 
-function updateCardioManual(id,val){if(!cardioState[id])cardioState[id]={};cardioState[id].manualMinutes=val;saveState();}
+  const s=cardioState.cardio?.[c.id]||{minutes:'',distance:'',calories:'',notes:''};
 
-function addCustomCardio(sessId){
+  return `<div class="cardio-card">
 
-  const name=(document.getElementById('customCardioName').value||'').trim();
+    <div class="cardio-name">${c.icon||'💜'} ${c.name}</div>
 
-  if(!name)return;
+    <div class="cardio-row"><label>Minutes</label><input class="cardio-input" type="number" value="${s.minutes||''}" oninput="updateCardio('${c.id}','minutes',this.value)"/><button class="cardio-timer-btn" onclick="toggleCardioTimer('${c.id}')">Timer</button><span class="cardio-elapsed" id="cardioTime_${c.id}">${fmt(cardioTimers[c.id]||0)}</span></div>
 
-  if(!cardioState[sessId+'_custom'])cardioState[sessId+'_custom']=[];
+    <div class="cardio-row"><label>Distance</label><input class="cardio-input" type="number" step="0.01" value="${s.distance||''}" oninput="updateCardio('${c.id}','distance',this.value)"/><span class="unit-label">mi</span></div>
 
-  cardioState[sessId+'_custom'].push({name,elapsed:0,manualMinutes:''});
+    <div class="cardio-row"><label>Calories</label><input class="cardio-input" type="number" value="${s.calories||''}" oninput="updateCardio('${c.id}','calories',this.value)"/></div>
 
-  saveState();renderSession();
+    <div class="cardio-row"><label>Notes</label><input class="cardio-input wide" value="${s.notes||''}" oninput="updateCardio('${c.id}','notes',this.value)"/></div>
 
-}
-
-function removeCustomCardio(sessId,i){
-
-  if(cardioState[sessId+'_custom'])cardioState[sessId+'_custom'].splice(i,1);
-
-  saveState();renderSession();
+  </div>`;
 
 }
 
-function updateCustomCardioManual(sessId,i,val){
+function updateCardio(id,field,val){
 
-  if(cardioState[sessId+'_custom']?.[i])cardioState[sessId+'_custom'][i].manualMinutes=val;
+  if(!cardioState.cardio)cardioState.cardio={};
+
+  if(!cardioState.cardio[id])cardioState.cardio[id]={};
+
+  cardioState.cardio[id][field]=val;
 
   saveState();
 
 }
 
+function toggleCardioTimer(id){
 
+  if(cardioTimers[id+'_int']){
 
-// ── PHOTO ─────────────────────────────────────────────────────
+    clearInterval(cardioTimers[id+'_int']);
 
-function handlePhoto(input){
+    cardioTimers[id+'_int']=null;
 
-  const file=input.files[0];if(!file)return;
+    return;
 
-  // Compress: resize to max 800px before base64
+  }
 
-  const img=new Image();
+  cardioTimers[id]=cardioTimers[id]||0;
 
-  const url2=URL.createObjectURL(file);
+  cardioTimers[id+'_int']=setInterval(()=>{
 
-  img.onload=()=>{
+    cardioTimers[id]++;
 
-    const max=800;
+    const el=document.getElementById('cardioTime_'+id);
 
-    let w=img.width,h=img.height;
+    if(el)el.textContent=fmt(cardioTimers[id]);
 
-    if(w>max){h=Math.round(h*max/w);w=max;}
+  },1000);
 
-    if(h>max){w=Math.round(w*max/h);h=max;}
+}
 
-    const canvas=document.createElement('canvas');
+function addCustomCardio(){
 
-    canvas.width=w;canvas.height=h;
+  const name=(document.getElementById('customCardioName').value||'').trim();
 
-    canvas.getContext('2d').drawImage(img,0,0,w,h);
+  if(!name){toast('Enter cardio name','err');return;}
 
-    photoBase64=canvas.toDataURL('image/jpeg',0.75);
+  const items=ls('customCardio')||[];
 
-    URL.revokeObjectURL(url2);
+  items.push({id:'custom_'+Date.now(),name,icon:'💜'});
 
-    const area=document.getElementById('photoArea');
+  ls('customCardio',items);
 
-    if(area){area.className='photo-area has-photo';area.textContent='📸 Photo ready — tap to change';}
+  renderSession();
 
-    const prev=document.getElementById('photoPreview');
+}
 
-    if(prev){prev.src=photoBase64;prev.style.display='block';}
+async function completeCardio(){
 
-  };
+  const url=getUrl();
 
-  img.src=url2;
+  if(!url){toast('Set up Google Sheets first (⚙️)','err');return;}
+
+  const now=new Date();
+
+  const dateStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  const timeStr=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+  const rows=[];
+
+  Object.entries(cardioState.cardio||{}).forEach(([id,r])=>{
+
+    if(r.minutes||r.distance||r.calories||r.notes){
+
+      const item=[...CARDIO_EXERCISES,...(ls('customCardio')||[])].find(x=>x.id===id);
+
+      rows.push({date:dateStr,time:timeStr,type:'cardio',exercise:item?.name||id,minutes:r.minutes||'',distance:r.distance||'',calories:r.calories||'',notes:r.notes||''});
+
+    }
+
+  });
+
+  if(!rows.length){toast('No cardio to submit','err');return;}
+
+  try{
+
+    await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({type:'cardio',rows})});
+
+    toast('Cardio submitted ✓','ok');
+
+    cardioState.cardio={};
+
+    saveState();
+
+    renderSession();
+
+  }catch(e){toast('Error — check URL','err');}
 
 }
 
@@ -1701,12 +1907,9 @@ function renderSession(){
 
   const w=WK[sess.full];if(!w){mc.innerHTML='';return;}
 
-  // Initialize the prefilled sets BEFORE calculating progress.
-  // Otherwise the page can show 0 of 0 sets even though exercises exist.
   getSessionExercises(sess).forEach(ex=>initSets(sess.id,ex));
+
   updateProgress();
-
-
 
   const exercises=getSessionExercises(sess);
 
@@ -1714,61 +1917,94 @@ function renderSession(){
 
     const rows=state[sess.id][ex.id];
 
-    const allDone=rows.length>0&&rows.every(r=>r.done);
+    const visibleRows=rows
+      .map((row,originalIndex)=>({row,originalIndex}))
+      .filter(item=>!item.row.hidden);
+
+    const allDone=visibleRows.length>0&&visibleRows.every(item=>item.row.done);
 
     const prev=getPrevBest(ex.name);
 
     const prevBadge=prev
+      ? `<span class="prev-badge">Prev: ${prev.weight>0?prev.weight+'lbs':''} ${prev.reps>0?'× '+prev.reps+(prev.weight>0?' reps':' sec'):''} (${prev.week})</span>`
+      : '';
 
-      ?`<span class="prev-badge">Prev: ${prev.weight>0?prev.weight+'lbs':''} ${prev.reps>0?'× '+prev.reps+(prev.weight>0?' reps':' sec'):''} (${prev.week})</span>`
+    const setRows=visibleRows.map((item,displayIndex)=>{
 
-      :'';
+      const r=item.row;
 
+      const i=item.originalIndex;
 
+      const lastWeightPlaceholder=
+        r.lastWeight!==''&&r.lastWeight!==null&&r.lastWeight!==undefined
+          ? r.lastWeight
+          : '';
 
-    const setRows=rows.map((r,i)=>{
+      const lastRepsPlaceholder=
+        r.lastReps!==''&&r.lastReps!==null&&r.lastReps!==undefined
+          ? r.lastReps
+          : '';
 
-      const wPlaceholder=prev&&prev.weight>0?prev.weight:ex.timeBased?'0':'lbs';
+      const wPlaceholder=
+        lastWeightPlaceholder!==''
+          ? lastWeightPlaceholder
+          : prev&&prev.weight>0
+            ? prev.weight
+            : ex.timeBased
+              ? '0'
+              : 'lbs';
 
-      const rPlaceholder=prev&&prev.reps>0?prev.reps:ex.timeBased?'30 sec':ex.reps;
+      const rPlaceholder=
+        lastRepsPlaceholder!==''
+          ? lastRepsPlaceholder
+          : prev&&prev.reps>0
+            ? prev.reps
+            : ex.timeBased
+              ? '30 sec'
+              : ex.reps;
+
+      const weightValue=
+        r.weight===0||r.weight==='0'
+          ? '0'
+          : r.weight||'';
+
+      const repsValue=
+        r.reps===0||r.reps==='0'
+          ? '0'
+          : r.reps||'';
 
       return `<tr>
+        <td class="tdl">${displayIndex+1}</td>
 
-        <td class="tdl">${i+1}</td>
-
-        ${ex.timeBased
-
-          ?`<td colspan="1" style="text-align:left;font-size:11px;color:var(--text3);padding:3px 6px">—</td>`
-
-          :`<td><input class="set-input" type="number" inputmode="decimal" placeholder="${wPlaceholder}" value="${r.weight===0||r.weight==='0'?'0':(r.weight||'')}"
-
-              oninput="updateField('${sess.id}','${ex.id}',${i},'weight',this.value)"/></td>`
-
+        ${
+          ex.timeBased
+            ? `<td colspan="1" style="text-align:left;font-size:11px;color:var(--text3);padding:3px 6px">—</td>`
+            : `<td>
+                <input class="set-input" type="number" inputmode="decimal" placeholder="${wPlaceholder}" value="${weightValue}"
+                  oninput="updateField('${sess.id}','${ex.id}',${i},'weight',this.value)"/>
+              </td>`
         }
 
-        <td><input class="set-input" type="number" inputmode="decimal" placeholder="${rPlaceholder}" value="${r.reps===0||r.reps==='0'?'0':(r.reps||'')}"
+        <td>
+          <input class="set-input" type="number" inputmode="decimal" placeholder="${rPlaceholder}" value="${repsValue}"
+            oninput="updateField('${sess.id}','${ex.id}',${i},'reps',this.value)"/>
+        </td>
 
-          oninput="updateField('${sess.id}','${ex.id}',${i},'reps',this.value)"/></td>
+        <td>
+          <div class="set-check${r.done?' done':''}"
+            onclick="toggleSetDone('${sess.id}','${ex.id}',${i},${ex.rest},'${ex.name.replace(/'/g,"\\'")}',${ex.timeBased||false})">✓</div>
+        </td>
 
-        <td><div class="set-check${r.done?' done':''}"
-
-          onclick="toggleSetDone('${sess.id}','${ex.id}',${i},${ex.rest},'${ex.name.replace(/'/g,"\\'")}',${ex.timeBased||false})">✓</div></td>
-
-        <td><button class="del-set" onclick="removeSet('${sess.id}','${ex.id}',${i})">✕</button></td>
-
+        <td>
+          <button class="del-set" onclick="removeSet('${sess.id}','${ex.id}',${i})">✕</button>
+        </td>
       </tr>`;
 
     }).join('');
 
-
-
     const colHeader=ex.timeBased
-
-      ?`<th class="thl">SET</th><th>—</th><th>SECS</th><th>✓</th><th></th>`
-
-      :`<th class="thl">SET</th><th>LBS</th><th>REPS</th><th>✓</th><th></th>`;
-
-
+      ? `<th class="thl">SET</th><th>—</th><th>SECS</th><th>✓</th><th></th>`
+      : `<th class="thl">SET</th><th>LBS</th><th>REPS</th><th>✓</th><th></th>`;
 
     return `<div class="ex-card${allDone?' complete':''}">
 
@@ -1780,11 +2016,7 @@ function renderSession(){
 
           <div class="ex-name-row">
 
-            <button class="ex-name-btn" onclick="openExInfo('${ex.name.replace(/'/g,"\\'")}')">
-
-              ${ex.name}
-
-            </button>
+            <button class="ex-name-btn" onclick="openExInfo('${ex.name.replace(/'/g,"\\'")}')">${ex.name}</button>
 
             ${prevBadge}
 
@@ -1824,8 +2056,6 @@ function renderSession(){
 
   }).join('');
 
-
-
   const vol=calcVolume();
 
   mc.innerHTML=`<div class="section-lbl">${w.tag}</div>${cards}
@@ -1858,11 +2088,7 @@ function renderSession(){
 
       <div class="volume-label">total volume · completed sets only</div>
 
-      <div class="photo-area" id="photoArea" onclick="document.getElementById('photoInput').click()">
-
-        📸 Tap to add a progress photo (optional)
-
-      </div>
+      <div class="photo-area" id="photoArea" onclick="document.getElementById('photoInput').click()">📸 Tap to add a progress photo (optional)</div>
 
       <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)"/>
 
@@ -1870,151 +2096,39 @@ function renderSession(){
 
       <button class="complete-btn" onclick="completeWorkout()">Submit to Workout Log ✓</button>
 
+      <button class="complete-btn" style="margin-top:9px;background:var(--surface2);border:.5px solid var(--border);color:var(--text2)" onclick="resetCurrentWorkout()">Reset This Workout</button>
+
     </div>`;
 
 }
 
 
 
-// ── RENDER CARDIO ─────────────────────────────────────────────
+// ── PHOTO ─────────────────────────────────────────────────────
 
-function renderCardio(mc,sess){
+function handlePhoto(input){
 
-  document.getElementById('progFill').style.width='0%';
+  const file=input.files?.[0];
 
-  document.getElementById('progText').textContent='Cardio day';
+  if(!file)return;
 
-  document.getElementById('progPct').textContent='';
+  const reader=new FileReader();
 
-  const week=parseInt(document.getElementById('weekSel').value);
+  reader.onload=e=>{
 
-  const sessId='cardio_w'+week;
+    photoBase64=e.target.result;
 
+    const area=document.getElementById('photoArea');
 
+    const prev=document.getElementById('photoPreview');
 
-  const cards=CARDIO_EXERCISES.map(ex=>{
+    if(area){area.classList.add('has-photo');area.textContent='Photo added ✓ Tap to change';}
 
-    const id=sessId+'_'+ex.id;
+    if(prev){prev.src=photoBase64;prev.style.display='block';}
 
-    const cs=cardioState[id]||{};
+  };
 
-    const isRunning=!!cardioTimers[id];
-
-    const elapsed=isRunning
-
-      ?(cs.elapsed||0)+Math.floor((Date.now()-(cardioTimers[id]?.startAt||Date.now()))/1000)
-
-      :(cs.elapsed||0);
-
-    return `<div class="cardio-card">
-
-      <div class="cardio-name">${ex.icon} ${ex.name}</div>
-
-      <div class="cardio-row">
-
-        <label>Timer</label>
-
-        <span class="cardio-elapsed" id="ctelapsed_${id}">${fmt(elapsed)}</span>
-
-        <button class="cardio-timer-btn" id="ctbtn_${id}"
-
-          onclick="${isRunning?'stopCardioTimer':'startCardioTimer'}('${id}')">${isRunning?'Stop':'Start'}</button>
-
-      </div>
-
-      <div class="cardio-row">
-
-        <label>Or enter min</label>
-
-        <input class="cardio-input" type="number" inputmode="decimal" placeholder="25" value="${cs.manualMinutes||''}"
-
-          oninput="updateCardioManual('${id}',this.value)"/>
-
-        <span class="unit-label">min</span>
-
-      </div>
-
-      <div class="cardio-row">
-
-        <label>Notes</label>
-
-        <input class="cardio-input wide" type="text" placeholder="e.g. level 8, incline 12" value="${cs.notes||''}"
-
-          oninput="updateCardioNote('${id}',this.value)"/>
-
-      </div>
-
-    </div>`;
-
-  }).join('');
-
-
-
-  const custom=(cardioState[sessId+'_custom']||[]).map((c,i)=>`
-
-    <div class="cardio-card">
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-
-        <div class="cardio-name">✏️ ${c.name}</div>
-
-        <button class="del-set" onclick="removeCustomCardio('${sessId}',${i})" style="color:var(--brand)">✕</button>
-
-      </div>
-
-      <div class="cardio-row">
-
-        <label>Timer</label>
-
-        <span class="cardio-elapsed">${fmt(c.elapsed||0)}</span>
-
-      </div>
-
-      <div class="cardio-row">
-
-        <label>Or enter min</label>
-
-        <input class="cardio-input" type="number" inputmode="decimal" placeholder="25" value="${c.manualMinutes||''}"
-
-          oninput="updateCustomCardioManual('${sessId}',${i},this.value)"/>
-
-        <span class="unit-label">min</span>
-
-      </div>
-
-    </div>`).join('');
-
-
-
-  mc.innerHTML=`
-
-    <div class="cardio-tip">
-
-      <div class="cardio-tip-title">Cardio Goal</div>
-
-      <div class="cardio-tip-body">2–3 sessions/week · 20–30 min each · Steps: 8,000–10,000/day</div>
-
-    </div>
-
-    <div class="section-lbl">Today's Cardio</div>
-
-    ${cards}${custom}
-
-    <div class="custom-cardio-form">
-
-      <input id="customCardioName" type="text" placeholder="Add custom exercise (e.g. Jump Rope)"/>
-
-      <button class="add-custom-btn" onclick="addCustomCardio('${sessId}')">+ Add Custom</button>
-
-    </div>
-
-    <div class="complete-section">
-
-      <div class="complete-title">Submit to Workout Log</div>
-
-      <button class="complete-btn" onclick="completeCardio('${sessId}')">Submit Cardio ✓</button>
-
-    </div>`;
+  reader.readAsDataURL(file);
 
 }
 
@@ -2050,6 +2164,8 @@ async function completeWorkout(){
 
     (state[sess.id]?.[ex.id]||[]).forEach((r,i)=>{
 
+      if(r.hidden)return;
+
       if(!r.done)return;
 
       const repsRaw=r.reps;
@@ -2072,15 +2188,19 @@ async function completeWorkout(){
 
       }
 
-      // Blank weight becomes 0 so bodyweight sets can submit.
-      // Typed 0 is also valid.
       const safeWeight=weightMissing||isNaN(wt)?0:wt;
 
-      rows.push({date:dateStr,time:timeStr,phase:'Phase 1',
-
-        week:'Week '+week,session:sess.label,exercise:ex.name,
-
-        set:i+1,weight:safeWeight,reps:rp});
+      rows.push({
+        date:dateStr,
+        time:timeStr,
+        phase:'Phase 1',
+        week:'Week '+week,
+        session:sess.label,
+        exercise:ex.name,
+        set:i+1,
+        weight:safeWeight,
+        reps:rp
+      });
 
     });
 
@@ -2088,9 +2208,15 @@ async function completeWorkout(){
 
   if(!rows.length){
 
-    if(skipped.length){toast('Checked sets need reps before submitting','err');}
+    if(skipped.length){
 
-    else{toast('No checked sets to submit','err');}
+      toast('Checked sets need reps before submitting','err');
+
+    }else{
+
+      toast('No checked sets to submit','err');
+
+    }
 
     return;
 
@@ -2102,109 +2228,66 @@ async function completeWorkout(){
 
   try{
 
-    await fetch(url,{method:'POST',mode:'no-cors',
-
+    await fetch(url,{
+      method:'POST',
+      mode:'no-cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-
-      body:JSON.stringify({type:'workout',rows,volume:vol,photo:photoToSend,
-
-        date:dateStr,time:timeStr,week:'Week '+week,session:sess.label,phase:'Phase 1'})
-
+      body:JSON.stringify({
+        type:'workout',
+        rows,
+        volume:vol,
+        photo:photoToSend,
+        date:dateStr,
+        time:timeStr,
+        week:'Week '+week,
+        session:sess.label,
+        phase:'Phase 1'
+      })
     });
 
     toast(`Submitted ${rows.length} set${rows.length===1?'':'s'} ✓`,'ok');
 
-    photoBase64=null;
+    rememberAndClearWorkoutSession(sess.id);
+
+    resetTimer();
+
+    updateProgress();
+
+    renderSession();
 
     setTimeout(()=>loadFromSheets(),4000);
 
-  }catch(e){toast('Error — check URL in ⚙️','err');}
+  }catch(e){
+
+    toast('Error — check URL in ⚙️','err');
+
+  }
 
 }
 
 
 
-// ── SUBMIT CARDIO ─────────────────────────────────────────────
-
-async function completeCardio(sessId){
-
-  const url=getUrl();
-
-  if(!url){toast('Set up Google Sheets first','err');return;}
-
-  const week=parseInt(document.getElementById('weekSel').value);
-
-  const now=new Date();
-
-  const dateStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-
-  const timeStr=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-
-
-
-  const rows=CARDIO_EXERCISES.map(ex=>{
-
-    const k=sessId+'_'+ex.id;const cs=cardioState[k]||{};
-
-    const hasTimer=(cs.elapsed||0)>0;
-
-    const hasManual=cs.manualMinutes&&parseFloat(cs.manualMinutes)>0;
-
-    if(!hasTimer&&!hasManual)return null;
-
-    return{exercise:ex.name,elapsed:cs.elapsed||0,minutes:cs.manualMinutes||null,notes:cs.notes||''};
-
-  }).filter(Boolean);
-
-
-
-  const custom=(cardioState[sessId+'_custom']||[]).filter(c=>(c.elapsed||0)>0||(c.manualMinutes&&parseFloat(c.manualMinutes)>0));
-
-  const allRows=[...rows,...custom.map(c=>({exercise:c.name,elapsed:c.elapsed||0,minutes:c.manualMinutes||null,notes:'custom'}))];
-
-  if(!allRows.length){toast('No cardio time logged','err');return;}
-
-
-
-  toast('Submitting cardio...','');
-
-  try{
-
-    await fetch(url,{method:'POST',mode:'no-cors',
-
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-
-      body:JSON.stringify({type:'cardio',rows:allRows,date:dateStr,time:timeStr,week:'Week '+week})
-
-    });
-
-    toast('Cardio submitted ✓','ok');
-
-  }catch(e){toast('Error submitting','err');}
-
-}
-
-
-
-// ── SETUP BANNER ──────────────────────────────────────────────
+// ── SETUP / MODALS / TOAST ────────────────────────────────────
 
 function renderSetupBanner(){
 
-  const url=getUrl();
+  const sb=document.getElementById('setupBanner');
 
-  document.getElementById('setupBanner').innerHTML=url?'':
+  if(getUrl()){
 
-    `<div class="setup-banner"><div class="setup-banner-text">Connect Google Sheets to save data across all devices.</div><button class="setup-banner-btn" onclick="openSetup()">Set Up</button></div>`;
+    sb.innerHTML='';
+
+  }else{
+
+    sb.innerHTML=`<div class="setup-banner"><div class="setup-banner-text">Connect Google Sheets so your workouts save.</div><button class="setup-banner-btn" onclick="openSetup()">Setup</button></div>`;
+
+  }
 
 }
 
-
-
-// ── MODALS ────────────────────────────────────────────────────
-
 function openSetup(){
 
-  const url=getUrl();if(url)document.getElementById('sheetUrlInput').value=url;
+  document.getElementById('sheetUrlInput').value=getUrl();
 
   document.getElementById('setupModal').style.display='flex';
 
@@ -2214,19 +2297,15 @@ function closeModal(id){document.getElementById(id).style.display='none';}
 
 function closeModalOutside(e,id){if(e.target.id===id)closeModal(id);}
 
-
-
-// ── TOAST ─────────────────────────────────────────────────────
-
-let tTO=null;
-
 function toast(msg,type){
 
-  const el=document.getElementById('toast');el.textContent=msg;
+  const t=document.getElementById('toast');
 
-  el.className='toast'+(type?' '+type:'');el.classList.add('show');
+  t.textContent=msg;
 
-  clearTimeout(tTO);tTO=setTimeout(()=>el.classList.remove('show'),3200);
+  t.className='toast show '+(type||'');
+
+  setTimeout(()=>{t.className='toast';},2600);
 
 }
 
@@ -2238,15 +2317,11 @@ loadState();
 
 renderSetupBanner();
 
-renderPresets();
-
 renderTabs();
 
-renderSession();
+renderPresets();
 
-// Load bests + progression from Sheets (cross-device, readable via GET)
-
-const _cached_b=ls('cachedBests');if(_cached_b)globalBests=_cached_b;
+const _cached_b=ls('cachedBests');if(_cached_b){globalBests=_cached_b;}
 
 const _cached_p=ls('cachedProg');if(_cached_p){globalProg=_cached_p;}
 
@@ -2257,6 +2332,3 @@ loadFromSheets();
 </body>
 
 </html>
-
-
-
