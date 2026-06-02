@@ -943,6 +943,48 @@ function loadState(){
 
 
 
+
+let audioCtx = null;
+
+function unlockAudio(){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === 'suspended')audioCtx.resume();
+  }catch(e){}
+}
+
+function playTimerDing(){
+  try{
+    unlockAudio();
+    if(!audioCtx)return;
+
+    const now = audioCtx.currentTime;
+
+    [0,0.18,0.36].forEach((offset,index)=>{
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(index === 1 ? 1046 : 880, now + offset);
+
+      gain.gain.setValueAtTime(0.0001, now + offset);
+      gain.gain.exponentialRampToValueAtTime(0.32, now + offset + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.16);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now + offset);
+      osc.stop(now + offset + 0.18);
+    });
+
+    if(navigator.vibrate)navigator.vibrate([180,80,180]);
+  }catch(e){}
+}
+
+document.addEventListener('click',unlockAudio,{once:true});
+document.addEventListener('touchstart',unlockAudio,{once:true});
+
 // ── TIMER ─────────────────────────────────────────────────────
 
 function pad(n){return String(n).padStart(2,'0')}
@@ -963,9 +1005,13 @@ function setPreset(v){preset=v;if(!running){secs=v;document.getElementById('tNum
 
 function toggleTimer(){
 
-  if(running){clearInterval(tInt);running=false;document.getElementById('togBtn').textContent='Start';}
+  unlockAudio();
 
-  else{
+  if(running){
+
+    clearInterval(tInt);running=false;document.getElementById('togBtn').textContent='Start';
+
+  }else{
 
     running=true;document.getElementById('togBtn').textContent='Pause';
 
@@ -979,7 +1025,23 @@ function toggleTimer(){
 
       el.className='ft-num'+(secs<=10?' warn':'');
 
-      if(secs<=0){clearInterval(tInt);running=false;document.getElementById('togBtn').textContent='Done ✓';}
+      if(secs<=0){
+
+        clearInterval(tInt);running=false;secs=0;
+
+        el.textContent='0:00';
+
+        el.className='ft-num warn';
+
+        document.getElementById('togBtn').textContent='Done ✓';
+
+        document.getElementById('timerLabel').textContent='Timer finished';
+
+        playTimerDing();
+
+        toast('Rest timer is done 🔔','ok');
+
+      }
 
     },1000);
 
@@ -996,6 +1058,8 @@ function resetTimer(){
   document.getElementById('tNum').className='ft-num';
 
   document.getElementById('togBtn').textContent='Start';
+
+  document.getElementById('timerLabel').textContent='Rest Timer';
 
 }
 
@@ -1190,13 +1254,19 @@ function calcVolume(){
 
   if(sess.type!=='workout')return 0;
 
-  const w=WK[sess.full];if(!w)return 0;
-
   getSessionExercises(sess).forEach(ex=>{
 
     (state[sess.id]?.[ex.id]||[]).forEach(r=>{
 
-      if(r.done&&r.weight&&r.reps)vol+=(parseFloat(r.weight)||0)*(parseFloat(r.reps)||0);
+      const reps=parseFloat(r.reps);
+
+      const weight=parseFloat(r.weight);
+
+      if(!r.done||isNaN(reps)||reps<=0)return;
+
+      const safeWeight=isNaN(weight)?0:weight;
+
+      vol+=safeWeight*reps;
 
     });
 
@@ -1417,7 +1487,31 @@ function updateField(sessId,exId,idx,field,val){
 
   state[sessId][exId][idx][field]=val;
 
+  // Auto fill remaining blank sets only.
+  // This does not overwrite anything you already typed.
+  if(field==='weight'||field==='reps'){
+
+    const rows=state[sessId][exId];
+
+    for(let i=idx+1;i<rows.length;i++){
+
+      const currentValue=rows[i][field];
+
+      const isBlank=currentValue===''||currentValue===null||currentValue===undefined;
+
+      if(isBlank&&val!==''&&val!==null&&val!==undefined){
+
+        rows[i][field]=val;
+
+      }
+
+    }
+
+  }
+
   saveState();
+
+  renderSession();
 
 }
 
@@ -1426,6 +1520,8 @@ function toggleSetDone(sessId,exId,idx,restSecs,exName,isTime){
   if(!state[sessId])state[sessId]={};
 
   const rows=state[sessId][exId]||[];
+
+  if(!rows[idx])return;
 
   rows[idx].done=!rows[idx].done;
 
@@ -1439,11 +1535,13 @@ function toggleSetDone(sessId,exId,idx,restSecs,exName,isTime){
 
     const sl=SESSIONS[cur].label;
 
-    // Save local history — for time-based, weight=0 is fine
-
     const hist=ls('exhist_'+exName)||[];
 
-    hist.unshift({weight:r.weight||0,reps:r.reps||0,week:wk,session:sl,
+    const weightValue=r.weight===''||r.weight===null||r.weight===undefined?0:r.weight;
+
+    const repsValue=r.reps===''||r.reps===null||r.reps===undefined?0:r.reps;
+
+    hist.unshift({weight:weightValue,reps:repsValue,week:wk,session:sl,
 
       date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),ts:Date.now()});
 
@@ -1642,13 +1740,13 @@ function renderSession(){
 
           ?`<td colspan="1" style="text-align:left;font-size:11px;color:var(--text3);padding:3px 6px">—</td>`
 
-          :`<td><input class="set-input" type="number" inputmode="decimal" placeholder="${wPlaceholder}" value="${r.weight||''}"
+          :`<td><input class="set-input" type="number" inputmode="decimal" placeholder="${wPlaceholder}" value="${r.weight===0||r.weight==='0'?'0':(r.weight||'')}"
 
               oninput="updateField('${sess.id}','${ex.id}',${i},'weight',this.value)"/></td>`
 
         }
 
-        <td><input class="set-input" type="number" inputmode="decimal" placeholder="${rPlaceholder}" value="${r.reps||''}"
+        <td><input class="set-input" type="number" inputmode="decimal" placeholder="${rPlaceholder}" value="${r.reps===0||r.reps==='0'?'0':(r.reps||'')}"
 
           oninput="updateField('${sess.id}','${ex.id}',${i},'reps',this.value)"/></td>
 
@@ -1944,49 +2042,63 @@ async function completeWorkout(){
 
   const vol=calcVolume();
 
-
-
-  // Only completed sets — for time-based exercises, weight=0 is allowed, just need reps>0
-
   const rows=[];
+
+  const skipped=[];
 
   getSessionExercises(sess).forEach(ex=>{
 
     (state[sess.id]?.[ex.id]||[]).forEach((r,i)=>{
 
-      const rp=parseFloat(r.reps)||0;
+      if(!r.done)return;
 
-      const wt=parseFloat(r.weight)||0;
+      const repsRaw=r.reps;
 
-      if(!r.done||rp<=0)return; // must be checked and have reps/time
+      const weightRaw=r.weight;
 
-      // For normal exercises, also require weight
+      const repsMissing=repsRaw===''||repsRaw===null||repsRaw===undefined;
 
-      if(!ex.timeBased&&wt<=0)return;
+      const weightMissing=weightRaw===''||weightRaw===null||weightRaw===undefined;
+
+      const rp=parseFloat(repsRaw);
+
+      const wt=parseFloat(weightRaw);
+
+      if(repsMissing||isNaN(rp)||rp<=0){
+
+        skipped.push(`${ex.name} set ${i+1}: missing reps`);
+
+        return;
+
+      }
+
+      // Blank weight becomes 0 so bodyweight sets can submit.
+      // Typed 0 is also valid.
+      const safeWeight=weightMissing||isNaN(wt)?0:wt;
 
       rows.push({date:dateStr,time:timeStr,phase:'Phase 1',
 
         week:'Week '+week,session:sess.label,exercise:ex.name,
 
-        set:i+1,weight:wt,reps:rp});
+        set:i+1,weight:safeWeight,reps:rp});
 
     });
 
   });
 
+  if(!rows.length){
 
+    if(skipped.length){toast('Checked sets need reps before submitting','err');}
 
-  if(!rows.length){toast('No valid completed sets to submit','err');return;}
+    else{toast('No checked sets to submit','err');}
 
+    return;
 
+  }
 
-  // Photo is submitted inside the same no-cors workout package.
-  // This avoids the browser blocking a separate Apps Script POST response.
   const photoToSend=photoBase64||null;
 
-  // Submit workout data (no-cors is fine here since we don't need to read the response)
-
-  toast('Submitting...','');
+  toast(`Submitting ${rows.length} set${rows.length===1?'':'s'}...`,'');
 
   try{
 
@@ -2000,11 +2112,9 @@ async function completeWorkout(){
 
     });
 
-    toast('Submitted ✓','ok');
+    toast(`Submitted ${rows.length} set${rows.length===1?'':'s'} ✓`,'ok');
 
     photoBase64=null;
-
-    // Reload from Sheets after a few seconds so Progress tab updates
 
     setTimeout(()=>loadFromSheets(),4000);
 
